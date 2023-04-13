@@ -1,5 +1,6 @@
 package com.journey.server.service;
 
+import com.journey.server.dto.place.CreatePlaceDTO;
 import com.journey.server.entity.PlaceEntity;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +28,9 @@ public class PlaceService {
 
     public int createPlace(PlaceEntity place) {
         return repo.createPlace(place);
+    }
+
+    public void updatePlace(int id, CreatePlaceDTO place) {
+        repo.updatePlace(id, place);
     }
 }
