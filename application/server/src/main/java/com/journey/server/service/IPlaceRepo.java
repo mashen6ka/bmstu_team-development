@@ -10,4 +10,6 @@ public interface IPlaceRepo {
     PlaceEntity getPlaceById(int id);
 
     void deletePlaceById(int id);
+
+    int createPlace(PlaceEntity place);
 }

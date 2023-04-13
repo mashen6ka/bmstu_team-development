@@ -1,5 +1,6 @@
 package com.journey.server.mapper;
 
+import com.journey.server.dto.place.CreatePlaceDTO;
 import com.journey.server.dto.place.FullInfoPlaceDTO;
 import com.journey.server.entity.PlaceEntity;
 import com.journey.server.entity.UserEntity;
@@ -23,6 +24,16 @@ public class PlaceMapper {
                 .cardText(place.getCardText())
                 .isVisited(place.isVisited())
                 .dttmUpdate(dateTime.format(formatter))
+                .build();
+    }
+
+    public PlaceEntity fromCreatePlaceDTO(CreatePlaceDTO dto) {
+        return PlaceEntity.builder()
+                .authorId(dto.getAuthorId())
+                .title(dto.getTitle())
+                .isVisited(dto.isVisited())
+                .dttmUpdate(dto.getDttmUpdate())
+                .cardText(dto.getCardText())
                 .build();
     }
 }
