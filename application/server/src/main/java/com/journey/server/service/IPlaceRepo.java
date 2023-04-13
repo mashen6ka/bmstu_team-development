@@ -8,4 +8,6 @@ public interface IPlaceRepo {
     ArrayList<PlaceEntity> getPlaceListByUserId(int userId);
 
     PlaceEntity getPlaceById(int id);
+
+    void deletePlaceById(int id);
 }
