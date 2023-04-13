@@ -15,4 +15,6 @@ public interface IPlaceRepo {
     int createPlace(PlaceEntity place);
 
     void updatePlace(int id, CreatePlaceDTO place);
+
+    void updateIsVisited(int id, boolean isVisited);
 }

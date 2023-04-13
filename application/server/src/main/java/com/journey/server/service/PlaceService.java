@@ -33,4 +33,8 @@ public class PlaceService {
     public void updatePlace(int id, CreatePlaceDTO place) {
         repo.updatePlace(id, place);
     }
+
+    public void updateIsVisited(int id, boolean isVisited) {
+        repo.updateIsVisited(id, isVisited);
+    }
 }
