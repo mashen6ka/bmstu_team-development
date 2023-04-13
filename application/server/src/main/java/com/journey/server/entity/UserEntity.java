@@ -6,6 +6,7 @@ import lombok.Getter;
 @Builder
 @Getter
 public class UserEntity {
+    int id;
     String login;
     String hash;
     String name;
