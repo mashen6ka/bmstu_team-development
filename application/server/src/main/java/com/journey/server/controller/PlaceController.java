@@ -72,4 +72,11 @@ public class PlaceController {
 
         return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
     }
+
+    @Operation(summary = "Update place")
+    @PutMapping("/{id:\\d+}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updatePlace(@PathVariable int id, @RequestBody CreatePlaceDTO place) {
+        placeService.updatePlace(id, place);
+    }
 }
