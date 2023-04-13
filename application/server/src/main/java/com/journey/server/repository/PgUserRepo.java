@@ -10,4 +10,9 @@ public class PgUserRepo implements IUserRepo {
     public UserEntity getUserById(int id) {
         return UserEntity.builder().name("Bob").build();
     }
+
+    @Override
+    public int createUser(UserEntity user) {
+        return 1;
+    }
 }
