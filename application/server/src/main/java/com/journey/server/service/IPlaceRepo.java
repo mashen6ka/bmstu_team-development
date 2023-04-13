@@ -1,5 +1,6 @@
 package com.journey.server.service;
 
+import com.journey.server.dto.place.CreatePlaceDTO;
 import com.journey.server.entity.PlaceEntity;
 
 import java.util.ArrayList;
@@ -12,4 +13,6 @@ public interface IPlaceRepo {
     void deletePlaceById(int id);
 
     int createPlace(PlaceEntity place);
+
+    void updatePlace(int id, CreatePlaceDTO place);
 }
