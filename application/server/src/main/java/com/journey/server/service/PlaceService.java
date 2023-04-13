@@ -24,4 +24,8 @@ public class PlaceService {
     public void deletePlaceById(int id) {
         repo.deletePlaceById(id);
     }
+
+    public int createPlace(PlaceEntity place) {
+        return repo.createPlace(place);
+    }
 }
