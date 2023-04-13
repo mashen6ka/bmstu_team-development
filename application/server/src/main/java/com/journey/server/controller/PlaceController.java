@@ -29,9 +29,9 @@ public class PlaceController {
         this.mapper = mapper;
     }
 
-    @Operation(summary = "Get place list")
+    @Operation(summary = "Get place list by userId")
     @GetMapping
-    public ArrayList<FullInfoPlaceDTO> getPlaceList(@RequestParam int userId) {
+    public ArrayList<FullInfoPlaceDTO> getPlaceListByUserId(@RequestParam int userId) {
         ArrayList<PlaceEntity> places = placeService.getPlacesListByUserId(userId);
         UserEntity user = userService.getUserById(userId);
 
