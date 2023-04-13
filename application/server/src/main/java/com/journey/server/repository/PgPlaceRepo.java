@@ -10,12 +10,17 @@ import java.util.ArrayList;
 public class PgPlaceRepo implements IPlaceRepo {
 
     @Override
-    public ArrayList<PlaceEntity> getPlacesListByUserId(int userId) {
+    public ArrayList<PlaceEntity> getPlaceListByUserId(int userId) {
         ArrayList<PlaceEntity> placeEntities = new ArrayList<>();
 
         placeEntities.add(PlaceEntity.builder().title("Lalala").dttmUpdate(1681401615).build());
         placeEntities.add(PlaceEntity.builder().title("Pupupu").dttmUpdate(168140161).build());
 
         return placeEntities;
+    }
+
+    @Override
+    public PlaceEntity getPlaceById(int id) {
+        return PlaceEntity.builder().title("okokok").dttmUpdate(1681000015).build();
     }
 }
