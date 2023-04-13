@@ -79,4 +79,10 @@ public class PlaceController {
     public void updatePlace(@PathVariable int id, @RequestBody CreatePlaceDTO place) {
         placeService.updatePlace(id, place);
     }
+
+    @Operation(summary = "Update isVisited field")
+    @PatchMapping("/{id:\\d+}")
+    public void updateIsVisited(@PathVariable int id, @RequestBody boolean isVisited) {
+        placeService.updateIsVisited(id, isVisited);
+    }
 }

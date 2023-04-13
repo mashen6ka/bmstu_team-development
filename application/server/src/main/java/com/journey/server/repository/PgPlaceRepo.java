@@ -39,4 +39,9 @@ public class PgPlaceRepo implements IPlaceRepo {
     public void updatePlace(int id, CreatePlaceDTO place) {
 
     }
+
+    @Override
+    public void updateIsVisited(int id, boolean isVisited) {
+
+    }
 }
