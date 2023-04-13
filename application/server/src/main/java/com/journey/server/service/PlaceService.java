@@ -13,7 +13,11 @@ public class PlaceService {
         this.repo = repo;
     }
 
-    public ArrayList<PlaceEntity> getPlacesListByUserId(int userId) {
-        return repo.getPlacesListByUserId(userId);
+    public ArrayList<PlaceEntity> getPlaceListByUserId(int userId) {
+        return repo.getPlaceListByUserId(userId);
+    }
+
+    public PlaceEntity getPlaceById(int id) {
+        return repo.getPlaceById(id);
     }
 }
