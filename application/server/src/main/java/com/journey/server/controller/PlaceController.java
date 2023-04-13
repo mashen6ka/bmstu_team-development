@@ -48,4 +48,10 @@ public class PlaceController {
 
         return mapper.toFullInfoPlaceDTO(place, user);
     }
+
+    @Operation(summary = "Delete place by id")
+    @DeleteMapping("/{id:\\d+}")
+    public void deletePlaceById(@PathVariable int id) {
+        placeService.deletePlaceById(id);
+    }
 }

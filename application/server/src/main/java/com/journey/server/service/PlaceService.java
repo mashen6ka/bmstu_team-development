@@ -20,4 +20,8 @@ public class PlaceService {
     public PlaceEntity getPlaceById(int id) {
         return repo.getPlaceById(id);
     }
+
+    public void deletePlaceById(int id) {
+        repo.deletePlaceById(id);
+    }
 }
