@@ -23,4 +23,9 @@ public class PgPlaceRepo implements IPlaceRepo {
     public PlaceEntity getPlaceById(int id) {
         return PlaceEntity.builder().title("okokok").dttmUpdate(1681000015).build();
     }
+
+    @Override
+    public void deletePlaceById(int id) {
+
+    }
 }
