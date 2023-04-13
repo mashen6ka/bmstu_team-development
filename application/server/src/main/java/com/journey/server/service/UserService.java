@@ -14,4 +14,8 @@ public class UserService {
     public UserEntity getUserById(int id) {
         return repo.getUserById(id);
     }
+
+    public int register(UserEntity user) {
+        return repo.createUser(user);
+    }
 }
