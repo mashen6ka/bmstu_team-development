@@ -8,10 +8,7 @@ import com.journey.server.service.PlaceService;
 import com.journey.server.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -32,7 +29,7 @@ public class PlaceController {
     @Operation(summary = "Get place list by userId")
     @GetMapping
     public ArrayList<FullInfoPlaceDTO> getPlaceListByUserId(@RequestParam int userId) {
-        ArrayList<PlaceEntity> places = placeService.getPlacesListByUserId(userId);
+        ArrayList<PlaceEntity> places = placeService.getPlaceListByUserId(userId);
         UserEntity user = userService.getUserById(userId);
 
         ArrayList<FullInfoPlaceDTO> fullInfoPlaceDTOS = new ArrayList<>();
@@ -41,5 +38,14 @@ public class PlaceController {
         }
 
         return fullInfoPlaceDTOS;
+    }
+
+    @Operation(summary = "Get place by id")
+    @GetMapping("/{id:\\d+}")
+    public FullInfoPlaceDTO getPlaceById(@PathVariable int id) {
+        PlaceEntity place = placeService.getPlaceById(id);
+        UserEntity user = userService.getUserById(place.getAuthorId());
+
+        return mapper.toFullInfoPlaceDTO(place, user);
     }
 }
