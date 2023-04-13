@@ -1,10 +1,13 @@
 package com.journey.server.dto.place;
 
-public record FullInfoPlaceDTO (
-    String authorName,
-    boolean isVisited,
-    String title,
-    String cardText
-) {
+import lombok.Builder;
+import lombok.Data;
 
+@Builder
+@Data
+public class FullInfoPlaceDTO {
+    String authorName;
+    boolean isVisited;
+    String title;
+    String cardText;
 }

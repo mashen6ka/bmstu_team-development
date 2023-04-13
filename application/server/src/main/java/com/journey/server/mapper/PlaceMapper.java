@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlaceMapper {
     public FullInfoPlaceDTO toFullInfoPlaceDTO(PlaceEntity place, UserEntity user) {
-        return new FullInfoPlaceDTO(user.getName(), place.isVisited(), place.getTitle(), place.getCardText());
+        return FullInfoPlaceDTO.builder()
+                .title(place.getTitle())
+                .authorName(user.getName())
+                .cardText(place.getCardText())
+                .isVisited(place.isVisited())
+                .build();
     }
 }
