@@ -1,5 +1,6 @@
 package com.journey.server.repository;
 
+import com.journey.server.dto.place.CreatePlaceDTO;
 import com.journey.server.entity.PlaceEntity;
 import com.journey.server.service.IPlaceRepo;
 import org.springframework.stereotype.Repository;
@@ -32,5 +33,10 @@ public class PgPlaceRepo implements IPlaceRepo {
     @Override
     public int createPlace(PlaceEntity place) {
         return 0;
+    }
+
+    @Override
+    public void updatePlace(int id, CreatePlaceDTO place) {
+
     }
 }
