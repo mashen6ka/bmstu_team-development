@@ -28,4 +28,9 @@ public class PgPlaceRepo implements IPlaceRepo {
     public void deletePlaceById(int id) {
 
     }
+
+    @Override
+    public int createPlace(PlaceEntity place) {
+        return 0;
+    }
 }
