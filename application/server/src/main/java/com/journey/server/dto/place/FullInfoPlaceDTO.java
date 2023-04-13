@@ -10,4 +10,5 @@ public class FullInfoPlaceDTO {
     boolean isVisited;
     String title;
     String cardText;
+    String dttmUpdate;
 }

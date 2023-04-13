@@ -13,8 +13,8 @@ public class PgPlaceRepo implements IPlaceRepo {
     public ArrayList<PlaceEntity> getPlacesListByUserId(int userId) {
         ArrayList<PlaceEntity> placeEntities = new ArrayList<>();
 
-        placeEntities.add(PlaceEntity.builder().title("Lalala").build());
-        placeEntities.add(PlaceEntity.builder().title("Pupupu").build());
+        placeEntities.add(PlaceEntity.builder().title("Lalala").dttmUpdate(1681401615).build());
+        placeEntities.add(PlaceEntity.builder().title("Pupupu").dttmUpdate(168140161).build());
 
         return placeEntities;
     }
