@@ -25,7 +25,7 @@ public class PgUserRepo implements IUserRepo {
 
         String getUser = "SELECT user_id, login, hash, name " +
                 "FROM public.users WHERE user_id = ?";
-        
+
         PreparedStatement userQuery = conn.prepareStatement(getUser);
         userQuery.setInt(1, id);
         ResultSet rs = userQuery.executeQuery();
@@ -50,11 +50,11 @@ public class PgUserRepo implements IUserRepo {
             String userAdd = "INSERT INTO public.users (login, hash, name) " +
                                 "VALUES (?, ?, ?)";
 
-            PreparedStatement wordInsertion = conn.prepareStatement(userAdd);
-            wordInsertion.setString(1, user.getLogin());
-            wordInsertion.setString(2, user.getHash());
-            wordInsertion.setString(3, user.getName());
-            wordInsertion.executeUpdate();
+            PreparedStatement userInsertion = conn.prepareStatement(userAdd);
+            userInsertion.setString(1, user.getLogin());
+            userInsertion.setString(2, user.getHash());
+            userInsertion.setString(3, user.getName());
+            userInsertion.executeUpdate();
 
             String checkId = "SELECT user_id from public.users where login = ?";
             PreparedStatement check = conn.prepareStatement(checkId);
@@ -85,10 +85,10 @@ public class PgUserRepo implements IUserRepo {
             String checkPass = "SELECT user_id FROM public.users" +
                     "WHERE login = ? AND hash = ?";
 
-            PreparedStatement wordInsertion = conn.prepareStatement(checkPass);
-            wordInsertion.setString(1, login);
-            wordInsertion.setString(2, hash);
-            ResultSet rs = wordInsertion.executeQuery();
+            PreparedStatement passQuery = conn.prepareStatement(checkPass);
+            passQuery.setString(1, login);
+            passQuery.setString(2, hash);
+            ResultSet rs = passQuery.executeQuery();
 
             if (!rs.next())
                 throw new WrongPasswordException("Неверный логин или пароль.");
