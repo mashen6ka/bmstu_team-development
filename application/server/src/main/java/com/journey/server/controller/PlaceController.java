@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 @RestController
@@ -34,7 +35,7 @@ public class PlaceController {
 
     @Operation(summary = "Get place list by userId")
     @GetMapping
-    public ArrayList<FullInfoPlaceDTO> getPlaceListByUserId(@RequestParam int userId) {
+    public ArrayList<FullInfoPlaceDTO> getPlaceListByUserId(@RequestParam int userId) throws SQLException {
         ArrayList<PlaceEntity> places = placeService.getPlaceListByUserId(userId);
         UserEntity user = userService.getUserById(userId);
 
@@ -48,7 +49,7 @@ public class PlaceController {
 
     @Operation(summary = "Get place by id")
     @GetMapping("/{id:\\d+}")
-    public FullInfoPlaceDTO getPlaceById(@PathVariable int id) {
+    public FullInfoPlaceDTO getPlaceById(@PathVariable int id) throws Exception {
         PlaceEntity place = placeService.getPlaceById(id);
         UserEntity user = userService.getUserById(place.getAuthorId());
 
