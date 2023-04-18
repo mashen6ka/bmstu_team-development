@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 @RestController
@@ -34,25 +35,39 @@ public class PlaceController {
 
     @Operation(summary = "Get place list by userId")
     @GetMapping
-    public ArrayList<FullInfoPlaceDTO> getPlaceListByUserId(@RequestParam int userId) {
+    public ResponseEntity<ArrayList<FullInfoPlaceDTO>> getPlaceListByUserId(@RequestParam int userId) {
         ArrayList<PlaceEntity> places = placeService.getPlaceListByUserId(userId);
-        UserEntity user = userService.getUserById(userId);
+        UserEntity user = null;
+
+        try {
+            user = userService.getUserById(userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         ArrayList<FullInfoPlaceDTO> fullInfoPlaceDTOS = new ArrayList<>();
         for (PlaceEntity place : places) {
             fullInfoPlaceDTOS.add(mapper.toFullInfoPlaceDTO(place, user));
         }
 
-        return fullInfoPlaceDTOS;
+        return new ResponseEntity<>(fullInfoPlaceDTOS, HttpStatus.OK);
     }
 
     @Operation(summary = "Get place by id")
     @GetMapping("/{id:\\d+}")
-    public FullInfoPlaceDTO getPlaceById(@PathVariable int id) {
+    public ResponseEntity<FullInfoPlaceDTO> getPlaceById(@PathVariable int id) {
         PlaceEntity place = placeService.getPlaceById(id);
-        UserEntity user = userService.getUserById(place.getAuthorId());
+        UserEntity user = null;
 
-        return mapper.toFullInfoPlaceDTO(place, user);
+        try {
+            user = userService.getUserById(place.getAuthorId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(mapper.toFullInfoPlaceDTO(place, user), HttpStatus.OK);
     }
 
     @Operation(summary = "Delete place by id")
