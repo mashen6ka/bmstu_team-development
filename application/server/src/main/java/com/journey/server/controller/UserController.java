@@ -1,6 +1,7 @@
 package com.journey.server.controller;
 
 import com.journey.server.dto.user.RegistryUserDTO;
+import com.journey.server.exceptions.LoginConflictException;
 import com.journey.server.mapper.UserMapper;
 import com.journey.server.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 
 @RestController
 @Tag(name = "USERS")
@@ -29,18 +31,21 @@ public class UserController {
     @Operation(summary = "User registration")
     @PostMapping("/registry")
     public ResponseEntity<String> register(@RequestBody RegistryUserDTO user) throws URISyntaxException {
-        int id = userService.register(mapper.fromRegistryUserDTO(user));
-
         HttpHeaders responseHeaders = new HttpHeaders();
-
         HttpStatus httpStatus;
-        if (id > 0) {
+
+        try {
+            int id = userService.register(mapper.fromRegistryUserDTO(user));
             httpStatus = HttpStatus.CREATED;
 
             URI location = new URI("/users/" + id);
             responseHeaders.setLocation(location);
-        } else {
+        } catch (LoginConflictException e) {
             httpStatus = HttpStatus.CONFLICT;
+            e.printStackTrace();
+        } catch (SQLException e) {
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            e.printStackTrace();
         }
 
         return new ResponseEntity<>(responseHeaders, httpStatus);
