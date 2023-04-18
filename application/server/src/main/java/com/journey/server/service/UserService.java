@@ -14,7 +14,7 @@ public class UserService {
         this.repo = repo;
     }
 
-    public UserEntity getUserById(int id) {
+    public UserEntity getUserById(int id) throws SQLException {
         return repo.getUserById(id);
     }
 
