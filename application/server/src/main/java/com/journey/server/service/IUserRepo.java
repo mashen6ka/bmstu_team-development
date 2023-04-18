@@ -7,7 +7,7 @@ import com.journey.server.exceptions.WrongPasswordException;
 import java.sql.SQLException;
 
 public interface IUserRepo {
-    UserEntity getUserById(int id);
+    UserEntity getUserById(int id) throws SQLException;
 
     int createUser(UserEntity user) throws LoginConflictException, SQLException;
 

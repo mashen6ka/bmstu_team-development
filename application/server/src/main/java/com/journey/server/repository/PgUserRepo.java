@@ -20,8 +20,26 @@ public class PgUserRepo implements IUserRepo {
     private final String UNIQUE_VIOLATION_STATE = "23505";
 
     @Override
-    public UserEntity getUserById(int id) {
-        return UserEntity.builder().name("Bob").build();
+    public UserEntity getUserById(int id) throws SQLException {
+        UserEntity user = null;
+
+        String getUser = "SELECT user_id, login, hash, name " +
+                "FROM public.users WHERE user_id = ?";
+        
+        PreparedStatement userQuery = conn.prepareStatement(getUser);
+        userQuery.setInt(1, id);
+        ResultSet rs = userQuery.executeQuery();
+
+        if (rs.next()) {
+            user = UserEntity.builder()
+                    .id(rs.getInt("user_id"))
+                    .login(rs.getString("login"))
+                    .hash(rs.getString("hash"))
+                    .name(rs.getString("name"))
+                    .build();
+        }
+
+        return user;//UserEntity.builder().name("Bob").build();
     }
 
     @Override
