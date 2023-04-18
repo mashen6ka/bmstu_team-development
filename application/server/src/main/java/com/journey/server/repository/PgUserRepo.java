@@ -2,6 +2,7 @@ package com.journey.server.repository;
 
 import com.journey.server.entity.UserEntity;
 import com.journey.server.exceptions.LoginConflictException;
+import com.journey.server.exceptions.WrongPasswordException;
 import com.journey.server.service.IUserRepo;
 import com.journey.server.utils.ConnectionManager;
 import org.springframework.stereotype.Repository;
@@ -53,6 +54,31 @@ public class PgUserRepo implements IUserRepo {
             else
                 throw new SQLException("Не удалось добавить пользователя " +
                                         "в базу данных");
+        }
+
+        return id;
+    }
+
+    @Override
+    public int authenticate(String login, String hash)
+            throws WrongPasswordException, SQLException {
+        int id = 0;
+        try {
+            String checkPass = "SELECT user_id FROM public.users" +
+                    "WHERE login = ? AND hash = ?";
+
+            PreparedStatement wordInsertion = conn.prepareStatement(checkPass);
+            wordInsertion.setString(1, login);
+            wordInsertion.setString(2, hash);
+            ResultSet rs = wordInsertion.executeQuery();
+
+            if (!rs.next())
+                throw new WrongPasswordException("Неверный логин или пароль.");
+
+            id = rs.getInt("user_id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Не удалось выполнить аутентификацию.");
         }
 
         return id;
