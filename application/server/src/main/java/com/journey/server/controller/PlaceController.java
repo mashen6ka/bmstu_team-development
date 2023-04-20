@@ -77,7 +77,7 @@ public class PlaceController {
     @Operation(summary = "Update place")
     @PutMapping("/{id:\\d+}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updatePlace(@PathVariable int id, @RequestBody CreatePlaceDTO place) {
+    public void updatePlace(@PathVariable int id, @RequestBody CreatePlaceDTO place) throws SQLException {
         placeService.updatePlace(id, mapper.fromCreatePlaceDTO(place));
     }
 
