@@ -9,6 +9,8 @@ import java.util.ArrayList;
 public interface IPlaceRepo {
     ArrayList<PlaceEntity> getPlaceListByUserId(int userId) throws SQLException;
 
+    ArrayList<PlaceEntity> getPlaceListByUserId(int userId, boolean isVisited) throws SQLException;
+
     PlaceEntity getPlaceById(int id);
 
     void deletePlaceById(int id);

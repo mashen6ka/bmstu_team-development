@@ -44,6 +44,33 @@ public class PgPlaceRepo implements IPlaceRepo {
     }
 
     @Override
+    public ArrayList<PlaceEntity> getPlaceListByUserId(int userId, boolean isVisited) throws SQLException {
+        ArrayList<PlaceEntity> places = new ArrayList<>();
+
+        String getPlaces = "SELECT place_id, author_id, is_visited, title " +
+                "dttm_update, card_text FROM public.places " +
+                "WHERE author_id = ? AND is_visited = ?";
+
+        PreparedStatement userPlaceQuery = conn.prepareStatement(getPlaces);
+        userPlaceQuery.setInt(1, userId);
+        userPlaceQuery.setBoolean(2, isVisited);
+        ResultSet rs = userPlaceQuery.executeQuery();
+
+        while (rs.next()) {
+            places.add(PlaceEntity.builder()
+                    .id(rs.getInt("place_id"))
+                    .authorId(rs.getInt("author_id"))
+                    .isVisited(rs.getBoolean("is_visited"))
+                    .title(rs.getString("title"))
+                    .dttmUpdate(rs.getInt("dttm_update"))
+                    .cardText(rs.getString("card_text"))
+                    .build());
+        }
+
+        return places;
+    }
+
+    @Override
     public PlaceEntity getPlaceById(int id) {
         return PlaceEntity.builder().title("okokok").dttmUpdate(1681000015).build();
     }
