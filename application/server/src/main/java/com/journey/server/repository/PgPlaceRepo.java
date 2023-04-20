@@ -2,6 +2,7 @@ package com.journey.server.repository;
 
 import com.journey.server.dto.place.CreatePlaceDTO;
 import com.journey.server.entity.PlaceEntity;
+import com.journey.server.entity.UserEntity;
 import com.journey.server.exceptions.LoginConflictException;
 import com.journey.server.service.IPlaceRepo;
 import com.journey.server.utils.ConnectionManager;
@@ -18,13 +19,28 @@ public class PgPlaceRepo implements IPlaceRepo {
     private final Connection conn = ConnectionManager.open();
 
     @Override
-    public ArrayList<PlaceEntity> getPlaceListByUserId(int userId) {
-        ArrayList<PlaceEntity> placeEntities = new ArrayList<>();
+    public ArrayList<PlaceEntity> getPlaceListByUserId(int userId) throws SQLException {
+        ArrayList<PlaceEntity> places = new ArrayList<>();
 
-        placeEntities.add(PlaceEntity.builder().title("Lalala").dttmUpdate(1681401615).build());
-        placeEntities.add(PlaceEntity.builder().title("Pupupu").dttmUpdate(168140161).build());
+        String getPlaces = "SELECT place_id, author_id, is_visited, title " +
+                "dttm_update, card_text FROM public.places WHERE author_id = ?";
 
-        return placeEntities;
+        PreparedStatement userPlaceQuery = conn.prepareStatement(getPlaces);
+        userPlaceQuery.setInt(1, userId);
+        ResultSet rs = userPlaceQuery.executeQuery();
+
+        while (rs.next()) {
+            places.add(PlaceEntity.builder()
+                    .id(rs.getInt("place_id"))
+                    .authorId(rs.getInt("author_id"))
+                    .isVisited(rs.getBoolean("is_visited"))
+                    .title(rs.getString("title"))
+                    .dttmUpdate(rs.getInt("dttm_update"))
+                    .cardText(rs.getString("card_text"))
+                    .build());
+        }
+
+        return places;
     }
 
     @Override
