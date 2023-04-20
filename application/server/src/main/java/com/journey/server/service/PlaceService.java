@@ -15,7 +15,7 @@ public class PlaceService {
         this.repo = repo;
     }
 
-    public ArrayList<PlaceEntity> getPlaceListByUserId(int userId) {
+    public ArrayList<PlaceEntity> getPlaceListByUserId(int userId) throws SQLException {
         return repo.getPlaceListByUserId(userId);
     }
 
