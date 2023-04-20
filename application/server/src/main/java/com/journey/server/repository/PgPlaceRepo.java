@@ -142,8 +142,17 @@ public class PgPlaceRepo implements IPlaceRepo {
     }
 
     @Override
-    public void updatePlace(int id, PlaceEntity place) {
+    public void updatePlace(int id, PlaceEntity place) throws SQLException {
+        String updPlace = "UPDATE public.places " +
+                "SET (is_visited, title, dttm_update, card_text) = (?, ?, ?, ?) " +
+                "WHERE place_id = ?";
 
+        PreparedStatement placeUpdate = conn.prepareStatement(updPlace);
+        placeUpdate.setBoolean(1, place.isVisited());
+        placeUpdate.setString(2, place.getTitle());
+        placeUpdate.setInt(3, place.getDttmUpdate());
+        placeUpdate.setString(4, place.getCardText());
+        placeUpdate.executeUpdate();
     }
 
     @Override

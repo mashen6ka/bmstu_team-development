@@ -31,7 +31,7 @@ public class PlaceService {
         return repo.createPlace(place);
     }
 
-    public void updatePlace(int id, PlaceEntity place) {
+    public void updatePlace(int id, PlaceEntity place) throws SQLException {
         repo.updatePlace(id, place);
     }
 
