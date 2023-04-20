@@ -2,13 +2,20 @@ package com.journey.server.repository;
 
 import com.journey.server.dto.place.CreatePlaceDTO;
 import com.journey.server.entity.PlaceEntity;
+import com.journey.server.exceptions.LoginConflictException;
 import com.journey.server.service.IPlaceRepo;
+import com.journey.server.utils.ConnectionManager;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 @Repository
 public class PgPlaceRepo implements IPlaceRepo {
+    private final Connection conn = ConnectionManager.open();
 
     @Override
     public ArrayList<PlaceEntity> getPlaceListByUserId(int userId) {
@@ -31,8 +38,38 @@ public class PgPlaceRepo implements IPlaceRepo {
     }
 
     @Override
-    public int createPlace(PlaceEntity place) {
-        return 0;
+    public int createPlace(PlaceEntity place) throws SQLException {
+        int id = 0;
+        try {
+            String placeAdd = "INSERT INTO public.places " +
+                                "(author_id, is_visited, title, dttm_update, card_text) " +
+                                "VALUES (?, ?, ?, ?, ?)";
+
+            PreparedStatement placeInsertion = conn.prepareStatement(placeAdd);
+            placeInsertion.setInt(1, place.getAuthorId());
+            placeInsertion.setBoolean(2, place.isVisited());
+            placeInsertion.setString(3, place.getTitle());
+            placeInsertion.setInt(4, place.getDttmUpdate());
+            placeInsertion.setString(5, place.getCardText());
+            placeInsertion.executeUpdate();
+
+            String checkId = "SELECT place_id FROM public.places " +
+                                "WHERE author_id = ? AND dttm_update = ?";
+            PreparedStatement check = conn.prepareStatement(checkId);
+            check.setInt(1, place.getAuthorId());
+            check.setInt(2, place.getDttmUpdate());
+
+            ResultSet rs = check.executeQuery();
+            rs.next();
+            id = rs.getInt("place_id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            throw new SQLException("Не удалось добавить место " +
+                        "в базу данных");
+        }
+
+        return id;
     }
 
     @Override

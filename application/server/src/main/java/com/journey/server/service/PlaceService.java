@@ -4,6 +4,7 @@ import com.journey.server.dto.place.CreatePlaceDTO;
 import com.journey.server.entity.PlaceEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 @Service
@@ -26,7 +27,7 @@ public class PlaceService {
         repo.deletePlaceById(id);
     }
 
-    public int createPlace(PlaceEntity place) {
+    public int createPlace(PlaceEntity place) throws SQLException {
         return repo.createPlace(place);
     }
 
