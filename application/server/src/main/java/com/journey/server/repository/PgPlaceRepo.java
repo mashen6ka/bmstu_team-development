@@ -103,7 +103,7 @@ public class PgPlaceRepo implements IPlaceRepo {
 
         PreparedStatement placeDeletion = conn.prepareStatement(deletePlace);
         placeDeletion.setInt(1, id);
-        placeDeletion.executeQuery();
+        placeDeletion.executeUpdate();
     }
 
     @Override
@@ -153,6 +153,6 @@ public class PgPlaceRepo implements IPlaceRepo {
         PreparedStatement placeSetVisit = conn.prepareStatement(setVisitedPlace);
         placeSetVisit.setBoolean(1, isVisited);
         placeSetVisit.setInt(2, id);
-        placeSetVisit.executeQuery();
+        placeSetVisit.executeUpdate();
     }
 }
