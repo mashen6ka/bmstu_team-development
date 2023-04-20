@@ -78,7 +78,7 @@ public class PlaceController {
     @PutMapping("/{id:\\d+}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePlace(@PathVariable int id, @RequestBody CreatePlaceDTO place) {
-        placeService.updatePlace(id, place);
+        placeService.updatePlace(id, mapper.fromCreatePlaceDTO(place));
     }
 
     @Operation(summary = "Update isVisited field")

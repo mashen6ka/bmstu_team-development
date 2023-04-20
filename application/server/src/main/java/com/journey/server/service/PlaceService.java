@@ -31,7 +31,7 @@ public class PlaceService {
         return repo.createPlace(place);
     }
 
-    public void updatePlace(int id, CreatePlaceDTO place) {
+    public void updatePlace(int id, PlaceEntity place) {
         repo.updatePlace(id, place);
     }
 

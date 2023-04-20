@@ -142,7 +142,7 @@ public class PgPlaceRepo implements IPlaceRepo {
     }
 
     @Override
-    public void updatePlace(int id, CreatePlaceDTO place) {
+    public void updatePlace(int id, PlaceEntity place) {
 
     }
 
