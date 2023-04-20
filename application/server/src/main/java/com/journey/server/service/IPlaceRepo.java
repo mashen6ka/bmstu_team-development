@@ -11,7 +11,7 @@ public interface IPlaceRepo {
 
     ArrayList<PlaceEntity> getPlaceListByUserId(int userId, boolean isVisited) throws SQLException;
 
-    PlaceEntity getPlaceById(int id);
+    PlaceEntity getPlaceById(int id) throws SQLException;
 
     void deletePlaceById(int id) throws SQLException;
 

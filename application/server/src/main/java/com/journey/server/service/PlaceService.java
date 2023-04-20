@@ -19,7 +19,7 @@ public class PlaceService {
         return repo.getPlaceListByUserId(userId);
     }
 
-    public PlaceEntity getPlaceById(int id) {
+    public PlaceEntity getPlaceById(int id) throws SQLException {
         return repo.getPlaceById(id);
     }
 
