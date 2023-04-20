@@ -78,8 +78,12 @@ public class PgPlaceRepo implements IPlaceRepo {
     }
 
     @Override
-    public void deletePlaceById(int id) {
+    public void deletePlaceById(int id) throws SQLException {
+        String deletePlace = "DELETE FROM public.places WHERE place_id = ?";
 
+        PreparedStatement placeDeletion = conn.prepareStatement(deletePlace);
+        placeDeletion.setInt(1, id);
+        placeDeletion.executeQuery();
     }
 
     @Override

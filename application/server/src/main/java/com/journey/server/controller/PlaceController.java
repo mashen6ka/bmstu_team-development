@@ -58,7 +58,7 @@ public class PlaceController {
 
     @Operation(summary = "Delete place by id")
     @DeleteMapping("/{id:\\d+}")
-    public void deletePlaceById(@PathVariable int id) {
+    public void deletePlaceById(@PathVariable int id) throws SQLException {
         placeService.deletePlaceById(id);
     }
 

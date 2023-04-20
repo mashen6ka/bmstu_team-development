@@ -23,7 +23,7 @@ public class PlaceService {
         return repo.getPlaceById(id);
     }
 
-    public void deletePlaceById(int id) {
+    public void deletePlaceById(int id) throws SQLException {
         repo.deletePlaceById(id);
     }
 
