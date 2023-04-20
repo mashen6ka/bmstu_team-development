@@ -23,7 +23,8 @@ public class PgPlaceRepo implements IPlaceRepo {
         ArrayList<PlaceEntity> places = new ArrayList<>();
 
         String getPlaces = "SELECT place_id, author_id, is_visited, title " +
-                "dttm_update, card_text FROM public.places WHERE author_id = ?";
+                "dttm_update, card_text FROM public.places WHERE author_id = ? " +
+                "ORDER BY dttm_update DESC";
 
         PreparedStatement userPlaceQuery = conn.prepareStatement(getPlaces);
         userPlaceQuery.setInt(1, userId);
@@ -49,7 +50,8 @@ public class PgPlaceRepo implements IPlaceRepo {
 
         String getPlaces = "SELECT place_id, author_id, is_visited, title " +
                 "dttm_update, card_text FROM public.places " +
-                "WHERE author_id = ? AND is_visited = ?";
+                "WHERE author_id = ? AND is_visited = ? " +
+                "ORDER BY dttm_update DESC";
 
         PreparedStatement userPlaceQuery = conn.prepareStatement(getPlaces);
         userPlaceQuery.setInt(1, userId);
