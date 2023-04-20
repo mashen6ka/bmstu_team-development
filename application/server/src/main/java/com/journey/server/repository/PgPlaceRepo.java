@@ -22,7 +22,7 @@ public class PgPlaceRepo implements IPlaceRepo {
     public ArrayList<PlaceEntity> getPlaceListByUserId(int userId) throws SQLException {
         ArrayList<PlaceEntity> places = new ArrayList<>();
 
-        String getPlaces = "SELECT place_id, author_id, is_visited, title " +
+        String getPlaces = "SELECT place_id, author_id, is_visited, title, " +
                 "dttm_update, card_text FROM public.places WHERE author_id = ? " +
                 "ORDER BY dttm_update DESC";
 
@@ -48,7 +48,7 @@ public class PgPlaceRepo implements IPlaceRepo {
     public ArrayList<PlaceEntity> getPlaceListByUserId(int userId, boolean isVisited) throws SQLException {
         ArrayList<PlaceEntity> places = new ArrayList<>();
 
-        String getPlaces = "SELECT place_id, author_id, is_visited, title " +
+        String getPlaces = "SELECT place_id, author_id, is_visited, title, " +
                 "dttm_update, card_text FROM public.places " +
                 "WHERE author_id = ? AND is_visited = ? " +
                 "ORDER BY dttm_update DESC";
@@ -76,7 +76,7 @@ public class PgPlaceRepo implements IPlaceRepo {
     public PlaceEntity getPlaceById(int id) throws SQLException {
         PlaceEntity place = null;
 
-        String getPlace = "SELECT place_id, author_id, is_visited, title " +
+        String getPlace = "SELECT place_id, author_id, is_visited, title, " +
                 "dttm_update, card_text FROM public.places WHERE place_id = ?";
 
         PreparedStatement placeQuery = conn.prepareStatement(getPlace);
