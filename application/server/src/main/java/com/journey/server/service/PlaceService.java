@@ -35,7 +35,7 @@ public class PlaceService {
         repo.updatePlace(id, place);
     }
 
-    public void updateIsVisited(int id, boolean isVisited) {
+    public void updateIsVisited(int id, boolean isVisited) throws SQLException {
         repo.updateIsVisited(id, isVisited);
     }
 }

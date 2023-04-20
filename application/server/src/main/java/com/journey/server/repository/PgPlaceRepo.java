@@ -147,7 +147,12 @@ public class PgPlaceRepo implements IPlaceRepo {
     }
 
     @Override
-    public void updateIsVisited(int id, boolean isVisited) {
+    public void updateIsVisited(int id, boolean isVisited) throws SQLException {
+        String setVisitedPlace = "UPDATE public.places SET is_visited = ? WHERE place_id = ?";
 
+        PreparedStatement placeSetVisit = conn.prepareStatement(setVisitedPlace);
+        placeSetVisit.setBoolean(1, isVisited);
+        placeSetVisit.setInt(2, id);
+        placeSetVisit.executeQuery();
     }
 }

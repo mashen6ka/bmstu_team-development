@@ -83,7 +83,7 @@ public class PlaceController {
 
     @Operation(summary = "Update isVisited field")
     @PatchMapping("/{id:\\d+}")
-    public void updateIsVisited(@PathVariable int id, @RequestBody boolean isVisited) {
+    public void updateIsVisited(@PathVariable int id, @RequestBody boolean isVisited) throws SQLException {
         placeService.updateIsVisited(id, isVisited);
     }
 }

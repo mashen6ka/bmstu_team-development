@@ -19,5 +19,5 @@ public interface IPlaceRepo {
 
     void updatePlace(int id, CreatePlaceDTO place);
 
-    void updateIsVisited(int id, boolean isVisited);
+    void updateIsVisited(int id, boolean isVisited) throws SQLException;
 }
