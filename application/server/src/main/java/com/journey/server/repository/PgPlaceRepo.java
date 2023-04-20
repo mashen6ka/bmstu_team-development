@@ -73,8 +73,28 @@ public class PgPlaceRepo implements IPlaceRepo {
     }
 
     @Override
-    public PlaceEntity getPlaceById(int id) {
-        return PlaceEntity.builder().title("okokok").dttmUpdate(1681000015).build();
+    public PlaceEntity getPlaceById(int id) throws SQLException {
+        PlaceEntity place = null;
+
+        String getPlace = "SELECT place_id, author_id, is_visited, title " +
+                "dttm_update, card_text FROM public.places WHERE place_id = ?";
+
+        PreparedStatement placeQuery = conn.prepareStatement(getPlace);
+        placeQuery.setInt(1, id);
+        ResultSet rs = placeQuery.executeQuery();
+
+        while (rs.next()) {
+            place = PlaceEntity.builder()
+                    .id(rs.getInt("place_id"))
+                    .authorId(rs.getInt("author_id"))
+                    .isVisited(rs.getBoolean("is_visited"))
+                    .title(rs.getString("title"))
+                    .dttmUpdate(rs.getInt("dttm_update"))
+                    .cardText(rs.getString("card_text"))
+                    .build();
+        }
+
+        return place;
     }
 
     @Override
