@@ -13,7 +13,7 @@ public interface IPlaceRepo {
 
     PlaceEntity getPlaceById(int id);
 
-    void deletePlaceById(int id);
+    void deletePlaceById(int id) throws SQLException;
 
     int createPlace(PlaceEntity place) throws SQLException;
 
