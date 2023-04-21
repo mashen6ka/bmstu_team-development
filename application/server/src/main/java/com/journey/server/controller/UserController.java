@@ -2,6 +2,8 @@ package com.journey.server.controller;
 
 import com.journey.server.dto.user.RegistryUserDTO;
 import com.journey.server.exceptions.LoginConflictException;
+import com.journey.server.jwt.JwtRequestDTO;
+import com.journey.server.jwt.JwtResponseDTO;
 import com.journey.server.mapper.UserMapper;
 import com.journey.server.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,5 +51,20 @@ public class UserController {
         }
 
         return new ResponseEntity<>(responseHeaders, httpStatus);
+    }
+
+    @Operation(summary = "User registration")
+    @PostMapping("/auth")
+    public ResponseEntity<JwtResponseDTO> auth(@RequestBody JwtRequestDTO request) throws SQLException {
+//        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus httpStatus;
+
+        JwtResponseDTO response = userService.auth(request);
+        httpStatus = HttpStatus.CREATED;
+
+//            URI location = new URI("/users/" + id);
+//            responseHeaders.setLocation(location);
+
+        return new ResponseEntity<>(response, httpStatus);
     }
 }
