@@ -3,12 +3,11 @@ package com.journey.server.service;
 import com.journey.server.entity.UserEntity;
 import com.journey.server.exceptions.LoginConflictException;
 import com.journey.server.exceptions.WrongPasswordException;
-import com.journey.server.jwt.JwtProvider;
-import com.journey.server.jwt.JwtRequestDTO;
-import com.journey.server.jwt.JwtResponseDTO;
+import com.journey.server.jwt.*;
 import io.jsonwebtoken.Claims;
 import jakarta.security.auth.message.AuthException;
 import lombok.NonNull;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -82,5 +81,11 @@ public class UserService {
             }
         }
         throw new AuthException("Невалидный JWT токен");
+    }
+
+    public JwtAuthentication getAuthInfo() {
+        JwtAuthentication auth = (JwtAuthentication) SecurityContextHolder.getContext().getAuthentication();
+        auth.setRole(JwtRole.USER);
+        return auth;
     }
 }
