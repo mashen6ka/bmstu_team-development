@@ -82,7 +82,7 @@ public class PgUserRepo implements IUserRepo {
             throws WrongPasswordException, SQLException {
         int id = 0;
         try {
-            String checkPass = "SELECT user_id FROM public.users" +
+            String checkPass = "SELECT user_id FROM public.users " +
                     "WHERE login = ? AND hash = ?";
 
             PreparedStatement passQuery = conn.prepareStatement(checkPass);
