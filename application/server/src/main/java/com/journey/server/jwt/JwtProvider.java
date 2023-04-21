@@ -23,6 +23,8 @@ public class JwtProvider {
     private final SecretKey jwtAccessSecret;
     private final SecretKey jwtRefreshSecret;
 
+    // ключи получаем из файла application.properties,
+    // их нужно нагенерить в формате Base64, например из массива байт SecretKey.getEncoded()
     public JwtProvider(
             @Value("${jwt.secret.access}") String jwtAccessSecret,
             @Value("${jwt.secret.refresh}") String jwtRefreshSecret
