@@ -152,6 +152,7 @@ public class PgPlaceRepo implements IPlaceRepo {
         placeUpdate.setString(2, place.getTitle());
         placeUpdate.setInt(3, place.getDttmUpdate());
         placeUpdate.setString(4, place.getCardText());
+        placeUpdate.setInt(5, id);
         placeUpdate.executeUpdate();
     }
 
