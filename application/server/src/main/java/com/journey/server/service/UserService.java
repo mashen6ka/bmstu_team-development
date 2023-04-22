@@ -39,6 +39,7 @@ public class UserService {
             id = repo.authenticate(authRequest.getLogin(), authRequest.getHash());
         } catch (WrongPasswordException e) {
             e.printStackTrace();
+            return new JwtResponseDTO(null, null);
         }
 
         UserEntity user = repo.getUserById(id);

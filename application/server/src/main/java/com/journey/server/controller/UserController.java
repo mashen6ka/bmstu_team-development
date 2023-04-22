@@ -53,17 +53,17 @@ public class UserController {
         return new ResponseEntity<>(responseHeaders, httpStatus);
     }
 
-    @Operation(summary = "User registration")
+    @Operation(summary = "User authorization")
     @PostMapping("/auth")
     public ResponseEntity<JwtResponseDTO> auth(@RequestBody JwtRequestDTO request) throws SQLException {
-//        HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus httpStatus;
 
         JwtResponseDTO response = userService.auth(request);
-        httpStatus = HttpStatus.CREATED;
 
-//            URI location = new URI("/users/" + id);
-//            responseHeaders.setLocation(location);
+        if (response.getAccessToken() == null)
+            httpStatus = HttpStatus.FORBIDDEN;
+        else
+            httpStatus = HttpStatus.CREATED;
 
         return new ResponseEntity<>(response, httpStatus);
     }
