@@ -1,9 +1,6 @@
 package com.journey.server.repository;
 
-import com.journey.server.dto.place.CreatePlaceDTO;
 import com.journey.server.entity.PlaceEntity;
-import com.journey.server.entity.UserEntity;
-import com.journey.server.exceptions.LoginConflictException;
 import com.journey.server.service.IPlaceRepo;
 import com.journey.server.utils.ConnectionManager;
 import org.springframework.stereotype.Repository;
@@ -14,10 +11,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Репозиторий используется для работы с таблицей places базы данных PostgreSQL
+ * Для подключения используется драйвер JDBC
+ */
 @Repository
 public class PgPlaceRepo implements IPlaceRepo {
+
     private final Connection conn = ConnectionManager.open();
 
+    /**
+     * Получение информации обо всех местах, созданных пользователем
+     * @param userId идентификатор пользователя, места которого требуется получить
+     * @return список объектов PlaceEntity, содержащий информацию о всех местах, желаемых и посещенных пользователем
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Override
     public ArrayList<PlaceEntity> getPlaceListByUserId(int userId) throws SQLException {
         ArrayList<PlaceEntity> places = new ArrayList<>();
@@ -44,6 +52,13 @@ public class PgPlaceRepo implements IPlaceRepo {
         return places;
     }
 
+    /**
+     * Получение информации о желаемых или посещенных местах, созданных пользователем
+     * @param userId идентификатор пользователя, места которого требуется получить
+     * @param isVisited флаг, требуется список желаемых или посещенных мест (true, если посещенных)
+     * @return список объектов PlaceEntity, содержащий информацию о всех местах, желаемых или посещенных пользователем (в зависимости от isVisited)
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Override
     public ArrayList<PlaceEntity> getPlaceListByUserId(int userId, boolean isVisited) throws SQLException {
         ArrayList<PlaceEntity> places = new ArrayList<>();
@@ -72,6 +87,12 @@ public class PgPlaceRepo implements IPlaceRepo {
         return places;
     }
 
+    /**
+     * Получение информации о месте по ее идентификатору
+     * @param id идентификатор места, информацию о котором требуется получить
+     * @return объект PlaceEntity с информацией из БД о заданном месте
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Override
     public PlaceEntity getPlaceById(int id) throws SQLException {
         PlaceEntity place = null;
@@ -97,6 +118,11 @@ public class PgPlaceRepo implements IPlaceRepo {
         return place;
     }
 
+    /**
+     * Удаление места по ID
+     * @param id идентификатор места, информацию о котором требуется удалить
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Override
     public void deletePlaceById(int id) throws SQLException {
         String deletePlace = "DELETE FROM public.places WHERE place_id = ?";
@@ -106,6 +132,12 @@ public class PgPlaceRepo implements IPlaceRepo {
         placeDeletion.executeUpdate();
     }
 
+    /**
+     * Создание нового места в БД
+     * @param place объект с информацией, которую пользователь ввел при создании карточки места
+     * @return идентификатор, назначенный в БД новому месту
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Override
     public int createPlace(PlaceEntity place) throws SQLException {
         int id = 0;
@@ -141,6 +173,12 @@ public class PgPlaceRepo implements IPlaceRepo {
         return id;
     }
 
+    /**
+     * Обновление нового места в БД
+     * @param id идентификатор места, информацию о котором требуется обновить
+     * @param place объект с информацией, которую пользователь ввел при редактировании карточки места
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Override
     public void updatePlace(int id, PlaceEntity place) throws SQLException {
         String updPlace = "UPDATE public.places " +
@@ -156,6 +194,12 @@ public class PgPlaceRepo implements IPlaceRepo {
         placeUpdate.executeUpdate();
     }
 
+    /**
+     * Перевод места в список посещенных или желаемых
+     * @param id идентификатор места, статус посещенности которого требуется обновить
+     * @param isVisited флаг, помечаем место как посещенное (true) или желаемое (false)
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Override
     public void updateIsVisited(int id, boolean isVisited) throws SQLException {
         String setVisitedPlace = "UPDATE public.places SET is_visited = ? WHERE place_id = ?";
