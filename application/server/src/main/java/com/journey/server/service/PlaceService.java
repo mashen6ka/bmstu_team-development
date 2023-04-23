@@ -11,6 +11,9 @@ import java.util.ArrayList;
  */
 @Service
 public class PlaceService {
+    /**
+     * Репозиторий, работающий с местами в базе данных
+     */
     private final IPlaceRepo repo;
 
     public PlaceService(IPlaceRepo repo) {

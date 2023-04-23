@@ -17,7 +17,9 @@ import java.util.ArrayList;
  */
 @Repository
 public class PgPlaceRepo implements IPlaceRepo {
-
+    /**
+     * Объект подключения к БД
+     */
     private final Connection conn = ConnectionManager.open();
 
     /**

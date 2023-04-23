@@ -19,8 +19,19 @@ import java.util.Map;
  */
 @Service
 public class UserService {
+    /**
+     * Репозиторий, работающий с пользователями в базе данных
+     */
     private final IUserRepo repo;
+
+    /**
+     * Словарь, хранящий ID пользователя и соответствующий refresh-токен
+     */
     private final Map<Integer, String> refreshStorage = new HashMap<>();
+
+    /**
+     * Объект, выдающий и валидирующий токены
+     */
     private final JwtProvider jwtProvider;
 
     /**

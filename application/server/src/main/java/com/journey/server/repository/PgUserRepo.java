@@ -18,6 +18,9 @@ import java.sql.SQLException;
  */
 @Repository
 public class PgUserRepo implements IUserRepo {
+    /**
+     * Объект подключения к БД
+     */
     private final Connection conn = ConnectionManager.open();
 
     // https://postgrespro.ru/docs/postgresql/14/errcodes-appendix
