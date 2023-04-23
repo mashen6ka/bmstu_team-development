@@ -12,6 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Репозиторий используется для работы с таблицей users базы данных PostgreSQL
+ * Для подключения используется драйвер JDBC
+ */
 @Repository
 public class PgUserRepo implements IUserRepo {
     private final Connection conn = ConnectionManager.open();
@@ -19,6 +23,12 @@ public class PgUserRepo implements IUserRepo {
     // https://postgrespro.ru/docs/postgresql/14/errcodes-appendix
     private final String UNIQUE_VIOLATION_STATE = "23505";
 
+    /**
+     * Получение информации о пользователе по идентификатору
+     * @param id идентификатор пользователя, информацию о котором требуется получить
+     * @return объект UserEntity, содержащий информацию о пользователе
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Override
     public UserEntity getUserById(int id) throws SQLException {
         UserEntity user = null;
@@ -39,9 +49,16 @@ public class PgUserRepo implements IUserRepo {
                     .build();
         }
 
-        return user;//UserEntity.builder().name("Bob").build();
+        return user;
     }
 
+    /**
+     * Создание новой записи о пользователе в базе данных
+     * @param user сущность UserEntity, содержашая информацию о пользователе при его регистрации
+     * @return идентификатор, назначенный новому пользователю в базе данных
+     * @throws LoginConflictException если пользователь с указанным при регистрации логином уже занят
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Override
     public int createUser(UserEntity user)
             throws LoginConflictException, SQLException {
@@ -66,7 +83,7 @@ public class PgUserRepo implements IUserRepo {
         } catch (SQLException e) {
             e.printStackTrace();
 
-            if (e.getSQLState().equals("23505"))
+            if (e.getSQLState().equals(UNIQUE_VIOLATION_STATE))
                 throw new LoginConflictException("Логин " + user.getLogin() +
                                                 " занят другим пользователем");
             else
@@ -77,6 +94,14 @@ public class PgUserRepo implements IUserRepo {
         return id;
     }
 
+    /**
+     * Проверка логина и пароля при входе
+     * @param login логин пользователя
+     * @param hash хеш пароля пользователя (SHA-256)
+     * @return идентификатор пользователя, если в БД есть запись с указанными логином и паролем
+     * @throws WrongPasswordException при несоответствии введенных логина и пароля
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Override
     public int authenticate(String login, String hash)
             throws WrongPasswordException, SQLException {
