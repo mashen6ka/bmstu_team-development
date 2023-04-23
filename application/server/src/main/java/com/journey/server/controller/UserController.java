@@ -52,7 +52,7 @@ public class UserController {
      * @throws URISyntaxException при неуспешном создании URI нового пользователя
      */
     @Operation(summary = "User registration")
-    @PostMapping("/registry")
+    @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegistryUserDTO user) throws URISyntaxException {
         HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus httpStatus;
