@@ -8,6 +8,7 @@ import com.journey.server.mapper.PlaceMapper;
 import com.journey.server.service.PlaceService;
 import com.journey.server.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 @RestController
 @Tag(name = "PLACES")
 @RequestMapping("/places")
+@SecurityRequirement(name = "bearerAuth")
 public class PlaceController {
     /**
      * Сервис, работающий с местами

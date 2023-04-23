@@ -7,6 +7,7 @@ import com.journey.server.jwt.JwtResponseDTO;
 import com.journey.server.mapper.UserMapper;
 import com.journey.server.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import java.sql.SQLException;
  */
 @RestController
 @Tag(name = "USERS")
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
     /**
      * Сервис, работающий с пользователями
