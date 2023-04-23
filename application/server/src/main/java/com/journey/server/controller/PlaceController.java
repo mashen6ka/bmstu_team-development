@@ -19,20 +19,46 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Класс, описывающий контроллер, обрабатывающий запросы клиента, связанные с местами
+ */
 @RestController
 @Tag(name = "PLACES")
 @RequestMapping("/places")
 public class PlaceController {
+    /**
+     * Сервис, работающий с местами
+     */
     private final PlaceService placeService;
+
+    /**
+     * Сервис, работающий с пользователями
+     */
     private final UserService userService;
+
+    /**
+     * Конвертер сущностей, описывающих место
+     */
     private final PlaceMapper mapper;
 
+    /**
+     * Конструктор контроллера
+     * @param placeService сервис, работающий с местами
+     * @param userService сервис, работающий с пользователями
+     * @param mapper конвертер сущностей, описывающих место
+     */
     public PlaceController(PlaceService placeService, UserService userService, PlaceMapper mapper) {
         this.placeService = placeService;
         this.userService = userService;
         this.mapper = mapper;
     }
 
+    /**
+     * Получение всех мест пользователя по его ID - запрос GET
+     * @param userId идентификатор пользователя, места которого требуется получить
+     * @return список сущностей, описывающих места данного пользователя
+     * @throws SQLException  при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Operation(summary = "Get place list by userId")
     @GetMapping
     public ArrayList<FullInfoPlaceDTO> getPlaceListByUserId(@RequestParam int userId) throws SQLException {
@@ -47,6 +73,12 @@ public class PlaceController {
         return fullInfoPlaceDTOS;
     }
 
+    /**
+     * Получение информации о месте по ее идентификатору - запрос GET
+     * @param id идентификатор места, информацию о котором требуется получить
+     * @return объект FullInfoPlaceDTO с информацией о заданном месте
+     * @throws Exception при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Operation(summary = "Get place by id")
     @GetMapping("/{id:\\d+}")
     public FullInfoPlaceDTO getPlaceById(@PathVariable int id) throws Exception {
@@ -56,12 +88,24 @@ public class PlaceController {
         return mapper.toFullInfoPlaceDTO(place, user);
     }
 
+    /**
+     * Удаление места по ID - запрос DELETE
+     * @param id идентификатор места, информацию о котором требуется удалить
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Operation(summary = "Delete place by id")
     @DeleteMapping("/{id:\\d+}")
     public void deletePlaceById(@PathVariable int id) throws SQLException {
         placeService.deletePlaceById(id);
     }
 
+    /**
+     * Создание нового места в БД- запрос POST
+     * @param place объект с информацией, которую пользователь ввел при создании карточки места
+     * @return новый URI и статус 201 CREATED при успешном добавлении места
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     * @throws URISyntaxException при неуспешном создании URI нового места
+     */
     @Operation(summary = "Create place")
     @PostMapping
     public ResponseEntity<String> createPlace(CreatePlaceDTO place) throws URISyntaxException, SQLException {
@@ -74,6 +118,12 @@ public class PlaceController {
         return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
     }
 
+    /**
+     * Обновление нового места в БД - запрос PUT
+     * @param id идентификатор места, информацию о котором требуется обновить
+     * @param place объект с информацией, которую пользователь ввел при редактировании карточки места
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Operation(summary = "Update place")
     @PutMapping("/{id:\\d+}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -81,6 +131,12 @@ public class PlaceController {
         placeService.updatePlace(id, mapper.fromCreatePlaceDTO(place));
     }
 
+    /**
+     * Перевод места в список посещенных или желаемых - запрос PATCH
+     * @param id идентификатор места, статус посещенности которого требуется обновить
+     * @param isVisited флаг, помечаем место как посещенное (true) или желаемое (false)
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Operation(summary = "Update isVisited field")
     @PatchMapping("/{id:\\d+}")
     public void updateIsVisited(@PathVariable int id, @RequestBody boolean isVisited) throws SQLException {

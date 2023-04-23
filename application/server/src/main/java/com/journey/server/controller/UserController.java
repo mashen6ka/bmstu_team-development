@@ -19,17 +19,38 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 
+/**
+ * Класс, описывающий контроллер, обрабатывающий запросы клиента, связанные с авторизацией и регистрацией
+ */
 @RestController
 @Tag(name = "USERS")
 public class UserController {
+    /**
+     * Сервис, работающий с пользователями
+     */
     private final UserService userService;
+
+    /**
+     * Конвертер сущностей, описывающих пользователя
+     */
     private final UserMapper mapper;
 
+    /**
+     * Конструктор контроллера
+     * @param userService сервис, работающий с пользователями
+     * @param mapper конвертер сущностей, описывающих место
+     */
     public UserController(UserService userService, UserMapper mapper) {
         this.userService = userService;
         this.mapper = mapper;
     }
 
+    /**
+     * Создание новой записи о пользователе в базе данных
+     * @param user сущность RegistryUserDTO, содержашая информацию о пользователе, введенную при его регистрации
+     * @return при успешной регистрации - новый URI и статус 201 CREATED, при конфликте логинов - 409 CONFLICT
+     * @throws URISyntaxException при неуспешном создании URI нового пользователя
+     */
     @Operation(summary = "User registration")
     @PostMapping("/registry")
     public ResponseEntity<String> register(@RequestBody RegistryUserDTO user) throws URISyntaxException {
@@ -53,6 +74,13 @@ public class UserController {
         return new ResponseEntity<>(responseHeaders, httpStatus);
     }
 
+    /**
+     * Аутентификация пользователя
+     * @param request сущность JwtRequestDTO, содержашая логин и пароль, введенные пользователем
+     * @return сущность с информацией о сгенерированных для пользователя токенах и статус 201 CREATED, если
+     * пароль подошел, иначе в полях accessToken, refreshToken отдается значение null, и статус 403 FORBIDDEN
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
     @Operation(summary = "User authorization")
     @PostMapping("/auth")
     public ResponseEntity<JwtResponseDTO> auth(@RequestBody JwtRequestDTO request) throws SQLException {
