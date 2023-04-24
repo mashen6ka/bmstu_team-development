@@ -72,10 +72,10 @@ public class PlaceService {
     /**
      * Перевод места в список посещенных или желаемых
      * @param id идентификатор места, статус посещенности которого требуется обновить
-     * @param isVisited флаг, помечаем место как посещенное (true) или желаемое (false)
+     * @param place объект с информацией, которую пользователь ввел при обновлении статуса посещенности места
      * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
      */
-    public void updateIsVisited(int id, boolean isVisited) throws SQLException {
-        repo.updateIsVisited(id, isVisited);
+    public void updateIsVisited(int id, PlaceEntity place) throws SQLException {
+        repo.updateIsVisited(id, place);
     }
 }

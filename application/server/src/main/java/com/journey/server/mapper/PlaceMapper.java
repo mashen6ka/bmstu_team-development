@@ -2,6 +2,7 @@ package com.journey.server.mapper;
 
 import com.journey.server.dto.place.CreatePlaceDTO;
 import com.journey.server.dto.place.FullInfoPlaceDTO;
+import com.journey.server.dto.place.UpdateIsVisitedDTO;
 import com.journey.server.entity.PlaceEntity;
 import com.journey.server.entity.UserEntity;
 import org.springframework.stereotype.Component;
@@ -37,7 +38,7 @@ public class PlaceMapper {
     }
 
     /**
-     * Конвертация из сущности DTO в сущность БД
+     * Конвертация из сущности DTO создания места в сущность БД
      * @param dto DTO с информацией о месте, полученной от пользователя
      * @return сущность БД, описывающая место
      */
@@ -48,6 +49,18 @@ public class PlaceMapper {
                 .isVisited(dto.isVisited())
                 .dttmUpdate(dto.getDttmUpdate())
                 .cardText(dto.getCardText())
+                .build();
+    }
+
+    /**
+     * Конвертация из сущности DTO обновления статуса посещенности места в сущность БД
+     * @param dto DTO с информацией о месте, полученной от пользователя
+     * @return сущность БД, описывающая место
+     */
+    public PlaceEntity fromUpdateIsVisitedDTO(UpdateIsVisitedDTO dto) {
+        return PlaceEntity.builder()
+                .isVisited(dto.isVisited())
+                .dttmUpdate(dto.getDttmUpdate())
                 .build();
     }
 }

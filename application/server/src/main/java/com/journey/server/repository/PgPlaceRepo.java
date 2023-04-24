@@ -142,7 +142,7 @@ public class PgPlaceRepo implements IPlaceRepo {
      */
     @Override
     public int createPlace(PlaceEntity place) throws SQLException {
-        int id = 0;
+        int id;
         try {
             String placeAdd = "INSERT INTO public.places " +
                                 "(author_id, is_visited, title, dttm_update, card_text) " +
@@ -199,16 +199,17 @@ public class PgPlaceRepo implements IPlaceRepo {
     /**
      * Перевод места в список посещенных или желаемых
      * @param id идентификатор места, статус посещенности которого требуется обновить
-     * @param isVisited флаг, помечаем место как посещенное (true) или желаемое (false)
+     * @param place объект с информацией, которую пользователь ввел при обновлении статуса посещенности места
      * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
      */
     @Override
-    public void updateIsVisited(int id, boolean isVisited) throws SQLException {
-        String setVisitedPlace = "UPDATE public.places SET is_visited = ? WHERE place_id = ?";
+    public void updateIsVisited(int id, PlaceEntity place) throws SQLException {
+        String setVisitedPlace = "UPDATE public.places SET (is_visited, dttm_update) = (?, ?) WHERE place_id = ?";
 
         PreparedStatement placeSetVisit = conn.prepareStatement(setVisitedPlace);
-        placeSetVisit.setBoolean(1, isVisited);
-        placeSetVisit.setInt(2, id);
+        placeSetVisit.setBoolean(1, place.isVisited());
+        placeSetVisit.setInt(2, place.getDttmUpdate());
+        placeSetVisit.setInt(3, id);
         placeSetVisit.executeUpdate();
     }
 }
