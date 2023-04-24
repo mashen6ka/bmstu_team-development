@@ -73,7 +73,7 @@ public class UserService {
      * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
      */
     public JwtResponseDTO auth(@NonNull JwtRequestDTO authRequest) throws SQLException {
-        int id = 0;
+        int id;
         try {
             id = repo.authenticate(authRequest.getLogin(), authRequest.getHash());
         } catch (WrongPasswordException e) {
@@ -92,11 +92,11 @@ public class UserService {
     /**
      * Получение свежего токена access
      * @param refreshToken refresh-токен, полученный от пользователя
-     * @return сущность с информацией о сгенерированных для пользователя токенах, если
-     * пароль подошел, иначе в полях accessToken, refreshToken отдается значение null
+     * @return сущность с информацией о сгенерированных для пользователя токенах
+     * @throws AuthException при невалидном refresh-токене
      * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
      */
-    public JwtResponseDTO getAccessToken(@NonNull String refreshToken) throws SQLException {
+    public JwtResponseDTO getAccessToken(@NonNull String refreshToken) throws SQLException, AuthException {
         if (jwtProvider.validateRefreshToken(refreshToken)) {
             final Claims claims = jwtProvider.getRefreshClaims(refreshToken);
             final int id = claims.get("id", Integer.class);
@@ -105,11 +105,11 @@ public class UserService {
             if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
                 final UserEntity user = repo.getUserById(id);
                 final String accessToken = jwtProvider.generateAccessToken(user);
-                return new JwtResponseDTO(accessToken, null);
+                return new JwtResponseDTO(accessToken, refreshToken);
             }
         }
 
-        return new JwtResponseDTO(null, null);
+        throw new AuthException("Невалидный JWT токен");
     }
 
     /**
