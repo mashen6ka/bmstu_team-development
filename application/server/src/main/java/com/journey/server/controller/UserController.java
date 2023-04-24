@@ -9,6 +9,7 @@ import com.journey.server.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.security.auth.message.AuthException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -96,5 +97,22 @@ public class UserController {
             httpStatus = HttpStatus.CREATED;
 
         return ResponseEntity.status(httpStatus).body(response);
+    }
+
+    /**
+     * Получение свежего токена refresh (и вместе с ним генерируется access-токен)
+     * @param refreshToken refresh-токен, полученный от пользователя
+     * @return сущность с информацией о сгенерированных для пользователя токенах и статус 201 CREATED,
+     * при неверном refresh-токене возвращается 403 FORBIDDEN
+     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
+     */
+    @Operation(summary = "Update refresh token")
+    @PostMapping("/refresh")
+    public ResponseEntity<JwtResponseDTO> refresh(@RequestBody String refreshToken) throws SQLException {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(userService.refresh(refreshToken));
+        } catch (AuthException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 }
