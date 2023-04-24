@@ -2,6 +2,7 @@ package com.journey.server.controller;
 
 import com.journey.server.dto.place.CreatePlaceDTO;
 import com.journey.server.dto.place.FullInfoPlaceDTO;
+import com.journey.server.dto.place.UpdateIsVisitedDTO;
 import com.journey.server.entity.PlaceEntity;
 import com.journey.server.entity.UserEntity;
 import com.journey.server.mapper.PlaceMapper;
@@ -136,12 +137,13 @@ public class PlaceController {
     /**
      * Перевод места в список посещенных или желаемых - запрос PATCH
      * @param id идентификатор места, статус посещенности которого требуется обновить
-     * @param isVisited флаг, помечаем место как посещенное (true) или желаемое (false)
+     * @param updateIsVisitedDTO объект с информацией, которую пользователь ввел при обновлении статуса посещенности места
      * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
      */
     @Operation(summary = "Update isVisited field")
     @PatchMapping("/{id:\\d+}")
-    public void updateIsVisited(@PathVariable int id, @RequestBody boolean isVisited) throws SQLException {
-        placeService.updateIsVisited(id, isVisited);
+    public void updateIsVisited(@PathVariable int id, @RequestBody UpdateIsVisitedDTO updateIsVisitedDTO)
+            throws SQLException {
+        placeService.updateIsVisited(id, mapper.fromUpdateIsVisitedDTO(updateIsVisitedDTO));
     }
 }

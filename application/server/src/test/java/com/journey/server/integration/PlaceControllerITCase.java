@@ -3,8 +3,7 @@ package com.journey.server.integration;
 import com.journey.server.controller.PlaceController;
 import com.journey.server.dto.place.CreatePlaceDTO;
 import com.journey.server.dto.place.FullInfoPlaceDTO;
-import com.journey.server.entity.PlaceEntity;
-import com.journey.server.utils.PlaceObjectMother;
+import com.journey.server.dto.place.UpdateIsVisitedDTO;
 import com.journey.server.utils.PropertiesUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -178,7 +177,7 @@ public class PlaceControllerITCase {
         assertDTOEquals(dto, initDTO);
 
         // act
-        controller.updateIsVisited(12, true);
+        controller.updateIsVisited(12, UpdateIsVisitedDTO.builder().isVisited(true).dttmUpdate(1682345338).build());
         dto = controller.getPlaceById(12);
 
         // assert
@@ -188,7 +187,7 @@ public class PlaceControllerITCase {
     @Test
     public void updateIsVisitedNoSuchPlaceITCase() throws Exception {
         // act
-        controller.updateIsVisited(100, true);
+        controller.updateIsVisited(100, UpdateIsVisitedDTO.builder().isVisited(true).dttmUpdate(1682345338).build());
         FullInfoPlaceDTO dto = controller.getPlaceById(100);
 
         // assert
