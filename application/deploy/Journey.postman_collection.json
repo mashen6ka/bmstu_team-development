@@ -291,7 +291,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "true",
+							"raw": "{\n    \"dttmUpdate\": 1682337627,\n    \"isVisited\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -320,7 +320,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"authorId\": 2,\n  \"title\": \"Поп концерт\",\n  \"dttmUpdate\": 1682337627,\n  \"cardText\": \"Описание 7\",\n  \"visited\": false\n}",
+							"raw": "{\n  \"authorId\": 2,\n  \"title\": \"Поп концерт\",\n  \"dttmUpdate\": 1682337627,\n  \"cardText\": \"Описание 7\",\n  \"isVisited\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -377,7 +377,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiLQldC60LDRgtC10YDQuNC90LAg0JzQsNC30YPRgCIsImlkIjoyLCJleHAiOjE2ODIzNDMyNTl9.eJC9HFZyM6g3x5lPFoSB0sk9mWuGGoLpuTTG9Sn3-u-HTynMeJjLOhaFU_Fx0EmvL59nzqdfvXUelgLw-blsHg",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiLQldC60LDRgtC10YDQuNC90LAg0JzQsNC30YPRgCIsImlkIjoyLCJleHAiOjE2ODIzNDkyMTN9.lHQ-AH4yHXSOvE7RcxkGCJ_oeNYZrSvTFAxI8PF99K4-0QsI2eo1zBQPZdxFctglhWmTUzcRJyx6t0K4eiHnBg",
 						"type": "string"
 					}
 				]
