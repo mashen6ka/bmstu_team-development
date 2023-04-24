@@ -110,7 +110,7 @@ public class PlaceController {
      */
     @Operation(summary = "Create place")
     @PostMapping
-    public ResponseEntity<String> createPlace(CreatePlaceDTO place) throws URISyntaxException, SQLException {
+    public ResponseEntity<String> createPlace(@RequestBody CreatePlaceDTO place) throws URISyntaxException, SQLException {
         int id = placeService.createPlace(mapper.fromCreatePlaceDTO(place));
 
         URI location = new URI("/places/" + id);
