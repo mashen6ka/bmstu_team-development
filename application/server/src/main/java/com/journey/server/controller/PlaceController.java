@@ -84,11 +84,15 @@ public class PlaceController {
      */
     @Operation(summary = "Get place by id")
     @GetMapping("/{id:\\d+}")
-    public FullInfoPlaceDTO getPlaceById(@PathVariable int id) throws Exception {
+    public ResponseEntity<FullInfoPlaceDTO> getPlaceById(@PathVariable int id) throws Exception {
         PlaceEntity place = placeService.getPlaceById(id);
+        if (place == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
         UserEntity user = userService.getUserById(place.getAuthorId());
 
-        return mapper.toFullInfoPlaceDTO(place, user);
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toFullInfoPlaceDTO(place, user));
     }
 
     /**
@@ -118,7 +122,7 @@ public class PlaceController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setLocation(location);
 
-        return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).headers(responseHeaders).build();
     }
 
     /**

@@ -73,7 +73,7 @@ public class UserController {
             e.printStackTrace();
         }
 
-        return new ResponseEntity<>(responseHeaders, httpStatus);
+        return ResponseEntity.status(httpStatus).headers(responseHeaders).build();
     }
 
     /**
@@ -95,6 +95,6 @@ public class UserController {
         else
             httpStatus = HttpStatus.CREATED;
 
-        return new ResponseEntity<>(response, httpStatus);
+        return ResponseEntity.status(httpStatus).body(response);
     }
 }

@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -79,29 +80,30 @@ public class PlaceControllerITCase {
         FullInfoPlaceDTO outDTO = getSomeExistingOutputPlace();
 
         // act
-        FullInfoPlaceDTO dto = controller.getPlaceById(12);
+        FullInfoPlaceDTO dto = controller.getPlaceById(12).getBody();
 
         // assert
+        assertNotNull(dto);
         assertDTOEquals(dto, outDTO);
     }
 
     @Test
     public void getPlaceByIdNoSuchPlaceITCase() throws Exception {
         // act
-        FullInfoPlaceDTO dto = controller.getPlaceById(100);
+        HttpStatusCode httpStatusCode = controller.getPlaceById(100).getStatusCode();
 
         // assert
-        assertNull(dto);
+        assertEquals(HttpStatus.NOT_FOUND, httpStatusCode);
     }
 
     @Test
     public void deletePlaceByIdITCase() throws Exception {
         // act
         controller.deletePlaceById(10);
-        FullInfoPlaceDTO dto = controller.getPlaceById(10);
+        HttpStatusCode httpStatusCode = controller.getPlaceById(10).getStatusCode();
 
         // assert
-        assertNull(dto);
+        assertEquals(HttpStatus.NOT_FOUND, httpStatusCode);
     }
 
     @Test
@@ -123,9 +125,10 @@ public class PlaceControllerITCase {
         assertEquals(response.getStatusCode(), HttpStatus.CREATED);
 
         // act
-        FullInfoPlaceDTO dto = controller.getPlaceById(31);
+        FullInfoPlaceDTO dto = controller.getPlaceById(31).getBody();
 
         // assert
+        assertNotNull(dto);
         assertDTOEquals(dto, outDTO);
     }
 
@@ -137,16 +140,18 @@ public class PlaceControllerITCase {
         FullInfoPlaceDTO outDTO = getSomeNewOutputPlace();
 
         // act
-        FullInfoPlaceDTO dto = controller.getPlaceById(12);
+        FullInfoPlaceDTO dto = controller.getPlaceById(12).getBody();
 
         // assert
+        assertNotNull(dto);
         assertDTOEquals(dto, initDTO);
 
         // act
         controller.updatePlace(12, inDTO);
-        dto = controller.getPlaceById(12);
+        dto = controller.getPlaceById(12).getBody();
 
         // assert
+        assertNotNull(dto);
         assertDTOEquals(dto, outDTO);
     }
 
@@ -157,10 +162,10 @@ public class PlaceControllerITCase {
 
         // act
         controller.updatePlace(100, inDTO);
-        FullInfoPlaceDTO dto = controller.getPlaceById(100);
+        HttpStatusCode httpStatusCode = controller.getPlaceById(100).getStatusCode();
 
         // assert
-        assertNull(dto);
+        assertEquals(HttpStatus.NOT_FOUND, httpStatusCode);
     }
 
     @Test
@@ -171,16 +176,18 @@ public class PlaceControllerITCase {
         outDTO.setVisited(true);
 
         // act
-        FullInfoPlaceDTO dto = controller.getPlaceById(12);
+        FullInfoPlaceDTO dto = controller.getPlaceById(12).getBody();
 
         // assert
+        assertNotNull(dto);
         assertDTOEquals(dto, initDTO);
 
         // act
         controller.updateIsVisited(12, UpdateIsVisitedDTO.builder().isVisited(true).dttmUpdate(1682345338).build());
-        dto = controller.getPlaceById(12);
+        dto = controller.getPlaceById(12).getBody();
 
         // assert
+        assertNotNull(dto);
         assertDTOEquals(dto, outDTO);
     }
 
@@ -188,9 +195,9 @@ public class PlaceControllerITCase {
     public void updateIsVisitedNoSuchPlaceITCase() throws Exception {
         // act
         controller.updateIsVisited(100, UpdateIsVisitedDTO.builder().isVisited(true).dttmUpdate(1682345338).build());
-        FullInfoPlaceDTO dto = controller.getPlaceById(100);
+        HttpStatusCode httpStatusCode = controller.getPlaceById(100).getStatusCode();
 
         // assert
-        assertNull(dto);
+        assertEquals(HttpStatus.NOT_FOUND, httpStatusCode);
     }
 }
