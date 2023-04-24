@@ -150,16 +150,47 @@
 					"response": []
 				},
 				{
-					"name": "Обновление токена",
+					"name": "Обновление access-токена",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiLQldC60LDRgtC10YDQuNC90LAg0JzQsNC30YPRgCIsImlkIjoyLCJleHAiOjE2ODQ5NTU3MzN9.AgCppXdaKS-9SZuvRv3OZYZ201aYnzPWvLBkJFCI6Kw6whKWB9MbyX1WKuuTqAez2SPWFvEMJoMi2bLZW89VNA",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/access",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"access"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Обновление refresh-токена",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0TmFtZSIsImlkIjoxMiwiZXhwIjoxNjg0OTI0Njg3fQ.sl_eGAmYrzfIeWU__qJoAqSvOo_693iRwYGhsrpBNbIU4IiG7UG5ELMtoyDESWGFQxMo-uhcmgvys44JRYemJ",
+							"raw": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiLQldC60LDRgtC10YDQuNC90LAg0JzQsNC30YPRgCIsImlkIjoyLCJleHAiOjE2ODQ5NTU0OTN9.W7CFD4tZoTlNCDJGZPZXVVbW51QGLq_7tvHCUdIFjjykafLJG6RE5qVFXntZA8pTB7T1VoV8tIjR5Wfm7SyFDA",
 							"options": {
 								"raw": {
-									"language": "json"
+									"language": "text"
 								}
 							}
 						},
@@ -188,7 +219,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/places?userId=8",
+							"raw": "http://localhost:8080/places?userId=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -200,7 +231,7 @@
 							"query": [
 								{
 									"key": "userId",
-									"value": "8"
+									"value": "2"
 								}
 							]
 						}
@@ -262,7 +293,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "false",
+							"raw": "{\n    \"dttmUpdate\": 1682337627,\n    \"isVisited\": false\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -402,6 +433,36 @@
 					}
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiLQldC60LDRgtC10YDQuNC90LAg0JzQsNC30YPRgCIsImlkIjoyLCJleHAiOjE2ODIzNjU1MzN9.TNtYd1BP5N1orIdYcmSrZN_nRT-z66-iIKdR56EKpSmGL9aq0Amx2VuIuKBjgvKh8ChwPCU7hOp9WEJG7BR3cw",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
