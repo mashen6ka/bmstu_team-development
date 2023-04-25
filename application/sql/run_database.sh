@@ -3,5 +3,5 @@
 docker cp . database:/
 
 # generate tables
-docker exec -i database sh -c "/sh/generate_db.sh $1"
+docker exec database sh -c "/sh/generate_db.sh $1"
 
