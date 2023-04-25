@@ -11,15 +11,13 @@ integration-test:
     - DB_PASSWORD=$DB_PASSWORD ./ci-scripts/setup-docker-compose-env.sh
     - docker compose -f ./application/sql/docker-compose.yml up -d
     - cd ./application/sql/
-    - ls
-    - cat ./.env
-    # - ./run_database.sh $DB_PASSWORD
+    - ./run_database.sh $DB_PASSWORD
     # - docker logs --tail 50 --follow --timestamps database
-    - docker cp . database:/
-    - sleep 3
-    - docker ps
+    # - docker cp . database:/
+    # - sleep 3
+    # - docker ps
     # - docker logs --tail 50 --follow --timestamps database
-    - docker exec -i database sh -c "/sh/generate_db.sh $DB_PASSWORD"
+    # - docker exec -i database sh -c "/sh/generate_db.sh $DB_PASSWORD"
     - cd ../..
     # - ./ci-scripts/run-database.sh $DB_PASSWORD
   script:
