@@ -17,7 +17,7 @@ integration-test:
     - ls
     # - ./run_database.sh $DB_PASSWORD
     - docker cp . database:/
-    - docker exec database sh -c "/sh/generate_db.sh $DB_PASSWORD"
+    - docker exec -i database sh -c "/sh/generate_db.sh $DB_PASSWORD"
     # - cd ../..
     # - ./ci-scripts/run-database.sh $DB_PASSWORD
   script:
