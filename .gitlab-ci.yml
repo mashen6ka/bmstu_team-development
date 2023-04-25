@@ -5,16 +5,22 @@ integration-test:
   stage: integration-test
   tags:
     - shell
-  before_script:
-    # - chmod +x ./ci-scripts/setup-database-properties.sh
+  # before_script:
+  #   # - chmod +x ./ci-scripts/setup-database-properties.sh
+  #   - ./ci-scripts/setup-database-properties.sh
+  #   - ./ci-scripts/setup-docker-compose-env.sh
+  #   - docker compose -f ./application/sql/docker-compose.yml up -d
+  #   - cd ./application/sql/
+  #   - ./run_database.sh $DB_PASSWORD
+  #   - cd ../..
+  #   # - ./ci-scripts/run-database.sh $DB_PASSWORD
+  script:
     - ./ci-scripts/setup-database-properties.sh
     - ./ci-scripts/setup-docker-compose-env.sh
     - docker compose -f ./application/sql/docker-compose.yml up -d
     - cd ./application/sql/
     - ./run_database.sh $DB_PASSWORD
     - cd ../..
-    # - ./ci-scripts/run-database.sh $DB_PASSWORD
-  script:
     - cd ./application/server/
     - mvn clean -Dtest=*ITCase test
     - cd ../..
