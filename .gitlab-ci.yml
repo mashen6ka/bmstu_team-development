@@ -5,6 +5,9 @@ integration-test:
   stage: integration-test
   tags:
     - shell
+  image: docker:20
+  services:
+    - docker:dind
   before_script:
     # - chmod +x ./ci-scripts/setup-database-properties.sh
     - ./ci-scripts/setup-database-properties.sh
