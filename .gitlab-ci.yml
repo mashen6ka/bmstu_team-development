@@ -9,9 +9,9 @@ integrational-test:
     # - chmod +x ./ci-scripts/setup-database-properties.sh
     - ./ci-scripts/setup-database-properties.sh
     - ./ci-scripts/setup-docker-compose-env.sh
-  script:
     - docker compose -f ./application/sql/docker-compose.yml up -d
-    - sleep 60
     - ./application/sql/run_database.sh
+  script:
     - mvn clean -Dtest=*ITCase test
+  after_script:
     - docker compose -f ./application/sql/docker-compose.yml down
