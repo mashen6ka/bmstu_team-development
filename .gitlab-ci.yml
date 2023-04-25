@@ -1,0 +1,15 @@
+stages:
+  - integrational-test
+
+integrational-test:
+  stage: integrational-test
+  tags:
+    - shell
+  before_script:
+    # - chmod +x ./ci-scripts/setup_database_properties.sh
+    - ./ci-scripts/setup_client_env.sh
+  script:
+    - docker compose -f ./application/sql/docker-compose.yml up -d
+    - ./application/sql/run_database.sh
+    - mvn clean -Dtest=*ITCase test
+    - docker compose -f ./application/sql/docker-compose.yml down
