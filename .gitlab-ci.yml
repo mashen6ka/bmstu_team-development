@@ -15,10 +15,10 @@ integration-test:
     # - ./run_database.sh $DB_PASSWORD
     - docker cp . database:/
     - docker exec database sh -c "/sh/generate_db.sh $DB_PASSWORD"
-    - cd ../..
+    # - cd ../..
     # - ./ci-scripts/run-database.sh $DB_PASSWORD
   script:
-    - cd ./application/server/
+    # - cd ./application/server/
     - mvn clean -Dtest=*ITCase test
     - cd ../..
   after_script:
