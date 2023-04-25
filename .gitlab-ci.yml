@@ -11,6 +11,7 @@ integrational-test:
     - ./ci-scripts/setup-docker-compose-env.sh
   script:
     - docker compose -f ./application/sql/docker-compose.yml up -d
+    - sleep 10
     - ./application/sql/run_database.sh
     - mvn clean -Dtest=*ITCase test
     - docker compose -f ./application/sql/docker-compose.yml down
