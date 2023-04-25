@@ -11,11 +11,11 @@ integration-test:
     - ./ci-scripts/setup-docker-compose-env.sh
     - docker compose -f ./application/sql/docker-compose.yml up -d
     - cd ./application/sql
-    - run_database.sh $DB_PASSWORD
-    - cd ../..
+    - ./run_database.sh $DB_PASSWORD
+    - cd ..
+    - cd ..
     # - ./ci-scripts/run-database.sh $DB_PASSWORD
   script:
-    - cd ./application/server
     - mvn clean -Dtest=*ITCase test
     - cd ../..
   after_script:
