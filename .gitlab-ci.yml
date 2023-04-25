@@ -12,6 +12,7 @@ integration-test:
     - docker compose -f ./application/sql/docker-compose.yml up -d
     - cd ./application/sql/
     - ls
+    - cat ./.env
     # - ./run_database.sh $DB_PASSWORD
     - docker logs --tail 50 --follow --timestamps database
     - docker cp . database:/
