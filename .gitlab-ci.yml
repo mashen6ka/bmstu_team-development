@@ -13,11 +13,10 @@ integration-test:
     - cd ./application/sql/
     - ls
     # - ./run_database.sh $DB_PASSWORD
-    - docker ps
     - docker cp . database:/
-    - docker ps
     - sleep 5
     - docker ps
+    - docker logs --tail 50 --follow --timestamps database
     - docker exec -i database sh -c "/sh/generate_db.sh $DB_PASSWORD"
     # - cd ../..
     # - ./ci-scripts/run-database.sh $DB_PASSWORD
