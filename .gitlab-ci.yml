@@ -8,6 +8,7 @@ integration-test:
   before_script:
     # - chmod +x ./ci-scripts/setup-database-properties.sh
     - DB_PASSWORD=$DB_PASSWORD DB_URL=$DB_URL DB_USER=$DB_USERNAME./ci-scripts/setup-database-properties.sh
+    - ./ci-scripts/setup-application-properties.sh
     - DB_PASSWORD=$DB_PASSWORD ./ci-scripts/setup-docker-compose-env.sh
     - docker compose -f ./application/sql/docker-compose.yml up -d
     - cd ./application/sql/
