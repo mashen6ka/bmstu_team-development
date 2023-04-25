@@ -10,7 +10,7 @@ integrational-test:
     - ./ci-scripts/setup-database-properties.sh
     - ./ci-scripts/setup-docker-compose-env.sh
   script:
-    - docker compose -f ./application/sql/docker-compose.yml up -d
+    - sudo docker compose -f ./application/sql/docker-compose.yml up -d
     - ./application/sql/run_database.sh
     - mvn clean -Dtest=*ITCase test
-    - docker compose -f ./application/sql/docker-compose.yml down
+    - sudo docker compose -f ./application/sql/docker-compose.yml down
