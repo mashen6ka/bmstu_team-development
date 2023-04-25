@@ -10,7 +10,7 @@ integration-test:
     - ./ci-scripts/setup-database-properties.sh
     - ./ci-scripts/setup-docker-compose-env.sh
     - docker compose -f ./application/sql/docker-compose.yml up -d
-    - ./application/sql/run_database.sh $DB_PASSWORD
+    - ./ci-scripts/run-database.sh $DB_PASSWORD
   script:
     - mvn clean -Dtest=*ITCase test
   after_script:
