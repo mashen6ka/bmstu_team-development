@@ -15,7 +15,7 @@ integration-test:
     - cd ../..
     # - ./ci-scripts/run-database.sh $DB_PASSWORD
   script:
-    - cd ./spplication/server/
+    - cd ./application/server/
     - mvn clean -Dtest=*ITCase test
     - cd ../..
   after_script:
