@@ -1,8 +1,8 @@
 stages:
-  - integrational-test
+  - integration-test
 
 integrational-test:
-  stage: integrational-test
+  stage: integration-test
   tags:
     - shell
   before_script:
@@ -11,7 +11,7 @@ integrational-test:
     - ./ci-scripts/setup-docker-compose-env.sh
   script:
     - docker compose -f ./application/sql/docker-compose.yml up -d
-    - sleep 10
+    - sleep 60
     - ./application/sql/run_database.sh
     - mvn clean -Dtest=*ITCase test
     - docker compose -f ./application/sql/docker-compose.yml down
