@@ -8,7 +8,7 @@ integrational-test:
   before_script:
     # - chmod +x ./ci-scripts/setup-database-properties.sh
     - ./ci-scripts/setup-database-properties.sh
-    # - ./ci-scripts/setup-docker-compose-env.sh
+    - ./ci-scripts/setup-docker-compose-env.sh
   script:
     - docker compose -f ./application/sql/docker-compose.yml up -d
     - ./application/sql/run_database.sh
