@@ -13,6 +13,7 @@ integration-test:
     - cd ./application/sql/
     - ls
     # - ./run_database.sh $DB_PASSWORD
+    - docker logs --tail 50 --follow --timestamps database
     - docker cp . database:/
     - sleep 5
     - docker ps
