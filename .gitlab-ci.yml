@@ -13,7 +13,9 @@ integration-test:
     - cd ./application/sql/
     - ls
     # - ./run_database.sh $DB_PASSWORD
+    - docker ps
     - docker cp . database:/
+    - docker ps
     - sleep 5
     - docker ps
     - docker exec -i database sh -c "/sh/generate_db.sh $DB_PASSWORD"
