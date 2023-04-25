@@ -23,7 +23,7 @@ integration-test:
     # - ./ci-scripts/run-database.sh $DB_PASSWORD
   script:
     - cd ./application/server/
-    - cat ./src/main/resources/application.properties
+    - cat ./src/main/resources/database.properties
     - mvn clean -Dtest=*ITCase test
     - cd ../..
   after_script:
