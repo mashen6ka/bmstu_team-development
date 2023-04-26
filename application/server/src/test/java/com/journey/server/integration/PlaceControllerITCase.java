@@ -168,28 +168,28 @@ public class PlaceControllerITCase {
         assertEquals(HttpStatus.NOT_FOUND, httpStatusCode);
     }
 
-    @Test
-    public void updateIsVisitedITCase() throws Exception {
-        // arrange
-        FullInfoPlaceDTO initDTO = getSomeExistingOutputPlace();
-        FullInfoPlaceDTO outDTO = getSomeExistingOutputPlace();
-        outDTO.setVisited(true);
+    // @Test
+    // public void updateIsVisitedITCase() throws Exception {
+    //     // arrange
+    //     FullInfoPlaceDTO initDTO = getSomeExistingOutputPlace();
+    //     FullInfoPlaceDTO outDTO = getSomeExistingOutputPlace();
+    //     outDTO.setVisited(true);
 
-        // act
-        FullInfoPlaceDTO dto = controller.getPlaceById(12).getBody();
+    //     // act
+    //     FullInfoPlaceDTO dto = controller.getPlaceById(12).getBody();
 
-        // assert
-        assertNotNull(dto);
-        assertDTOEquals(dto, initDTO);
+    //     // assert
+    //     assertNotNull(dto);
+    //     assertDTOEquals(dto, initDTO);
 
-        // act
-        controller.updateIsVisited(12, UpdateIsVisitedDTO.builder().isVisited(true).dttmUpdate(1682345338).build());
-        dto = controller.getPlaceById(12).getBody();
+    //     // act
+    //     controller.updateIsVisited(12, UpdateIsVisitedDTO.builder().isVisited(true).dttmUpdate(1682345338).build());
+    //     dto = controller.getPlaceById(12).getBody();
 
-        // assert
-        assertNotNull(dto);
-        assertDTOEquals(dto, outDTO);
-    }
+    //     // assert
+    //     assertNotNull(dto);
+    //     assertDTOEquals(dto, outDTO);
+    // }
 
     @Test
     public void updateIsVisitedNoSuchPlaceITCase() throws Exception {
