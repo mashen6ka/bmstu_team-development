@@ -12,6 +12,7 @@ integration-test:
     - docker compose -f ./application/sql/docker-compose.yml up -d
     - cd ./application/sql/
     - docker cp . database:/
+    - sleep 3
     - docker exec -i database sh -c "/sh/generate_db.sh $DB_PASSWORD"
     - cd ../..
   script:
