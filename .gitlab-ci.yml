@@ -1,29 +1,21 @@
 stages:
-  - integration-test
+  - test
 
 integration-test:
-  stage: integration-test
+  stage: test
   tags:
     - shell
   before_script:
-    # - chmod +x ./ci-scripts/setup-database-properties.sh
     - DB_PASSWORD=$DB_PASSWORD DB_URL=$DB_URL DB_USERNAME=$DB_USERNAME ./ci-scripts/setup-database-properties.sh
     - ./ci-scripts/setup-application-properties.sh
     - DB_PASSWORD=$DB_PASSWORD ./ci-scripts/setup-docker-compose-env.sh
     - docker compose -f ./application/sql/docker-compose.yml up -d
     - cd ./application/sql/
-    # - ./run_database.sh $DB_PASSWORD
-    # - docker logs --tail 50 --follow --timestamps database
     - docker cp . database:/
-    - sleep 3
-    - docker ps
-    # - docker logs --tail 50 --follow --timestamps database
     - docker exec -i database sh -c "/sh/generate_db.sh $DB_PASSWORD"
     - cd ../..
-    # - ./ci-scripts/run-database.sh $DB_PASSWORD
   script:
     - cd ./application/server/
-    - cat ./src/main/resources/database.properties
     - mvn clean -Dtest=*ITCase test
     - cd ../..
   after_script:
