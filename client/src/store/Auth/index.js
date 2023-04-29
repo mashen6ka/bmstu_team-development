@@ -8,17 +8,17 @@ const state = {
 };
 
 const getters = {
-  USER: (state) => state.user,
-  ERROR: (state) => state.error,
+  user: (state) => state.user,
+  error: (state) => state.error,
 };
 
 const mutations = {
-  SET_USER: (state, user) => (state.user = user),
-  SET_ERROR: (state, error) => (state.error = error),
+  setUser: (state, user) => (state.user = user),
+  setError: (state, error) => (state.error = error),
 };
 
 const actions = {
-  AUTHORIZE: async (context, { login, password }) => {
+  login: async (context, { login, password }) => {
     const authHeader = buildAuthHeader();
     try {
       const res = await axios.post(
@@ -29,20 +29,21 @@ const actions = {
           headers: { Authorization: authHeader },
         }
       );
-      context.commit("SET_ERROR", null);
+      context.commit("setError", null);
 
       localStorage.setItem("accessToken", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);
     } catch (err) {
-      console.log("HERE");
       const status = err.response.status;
       let errorText;
       if (status === 403) errorText = "Incorrect login or password";
       else if (status === 500) errorText = "Internal server error";
-
-      console.log(err.response.status);
-      context.commit("SET_ERROR", errorText);
+      context.commit("setError", errorText);
     }
+  },
+  logout: () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
   },
 };
 

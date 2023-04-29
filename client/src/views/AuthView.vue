@@ -85,7 +85,7 @@ export default {
   },
   computed: {
     errorMessage() {
-      return this.$store.getters["auth/ERROR"];
+      return this.$store.getters["auth/error"];
     },
   },
   data() {
@@ -98,26 +98,20 @@ export default {
   methods: {
     async authorize() {
       if (this.login === "") {
-        this.$store.commit("auth/SET_ERROR", "Empty login!");
+        this.$store.commit("auth/setError", "Empty login!");
         return;
       }
       if (this.password === "") {
-        this.$store.commit("auth/SET_ERROR", "Empty password!");
+        this.$store.commit("auth/setError", "Empty password!");
         return;
       }
 
-      await this.$store.dispatch("auth/AUTHORIZE", {
+      await this.$store.dispatch("auth/login", {
         login: this.login,
         password: this.password,
       });
 
       if (!this.errorMessage) {
-        const accessToken = this.$store.getters["auth/ACCESS_TOKEN"];
-        localStorage.setItem("accessToken", accessToken);
-
-        const refreshToken = this.$store.getters["auth/REFRESH_TOKEN"];
-        localStorage.setItem("refreshToken", refreshToken);
-
         this.showModal = false;
         this.$router.push("home");
       }
