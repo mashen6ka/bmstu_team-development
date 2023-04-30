@@ -24,6 +24,10 @@ import {
   BIconPencil,
   BIconTrash,
   BLink,
+  BTabs,
+  BTab,
+  BCard,
+  BNavItem,
 } from "bootstrap-vue";
 
 Vue.component("BRow", BRow);
@@ -42,6 +46,10 @@ Vue.component("BIconCheckCircle", BIconCheckCircle);
 Vue.component("BIconPencil", BIconPencil);
 Vue.component("BIconTrash", BIconTrash);
 Vue.component("BLink", BLink);
+Vue.component("BTabs", BTabs);
+Vue.component("BTab", BTab);
+Vue.component("BCard", BCard);
+Vue.component("BNavItem", BNavItem);
 
 Vue.config.productionTip = false;
 Vue.use(Vuelidate);
