@@ -43,6 +43,31 @@ const actions = {
       context.commit("setError", err);
     }
   },
+  edit: async (context, { id, title, isVisited, cardText, dttmUpdate }) => {
+    try {
+      if (title === "") throw new BaseError(400, "Empty title!");
+      const authHeader = buildAuthHeader();
+      if (!authHeader) throw new BaseError(403);
+      const authorId = getUserId();
+
+      try {
+        await axios.put(
+          process.env.VUE_APP_SERVER_ADDRESS + `/places/${id}`,
+          { authorId, title, isVisited, cardText, dttmUpdate },
+          {
+            withCredentials: false,
+            headers: { Authorization: authHeader },
+          }
+        );
+
+        context.commit("setError", null);
+      } catch (err) {
+        throw new BaseError(err.response.status);
+      }
+    } catch (err) {
+      context.commit("setError", err);
+    }
+  },
 };
 
 export default {
