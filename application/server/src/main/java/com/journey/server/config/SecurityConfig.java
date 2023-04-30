@@ -27,7 +27,7 @@ public class SecurityConfig {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeHttpRequests(
-                authz -> authz.requestMatchers("/register", "/v3/api-docs/**", "/auth", "/token", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                authz -> authz.requestMatchers("/register", "/v3/api-docs/**", "/auth", "/refresh", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                     .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
