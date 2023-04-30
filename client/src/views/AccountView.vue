@@ -10,7 +10,7 @@
     </b-row>
     <b-card no-body class="m-3">
       <b-tabs content-class="mt-3" card>
-        <b-tab title="Favourite" active class="p-0">
+        <b-tab title="Favourite" class="p-0">
           <PlaceList v-bind:place-list="favouritePlaces"></PlaceList>
         </b-tab>
         <b-tab title="Visited" class="p-0"
@@ -44,12 +44,13 @@ export default {
     AddPlace,
     PlaceList,
   },
-  mounted() {
+  async mounted() {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
       this.$router.push("/auth");
     }
-    Promise.all([this.$store.dispatch("place/getList")]);
+    await this.$store.dispatch("place/getList");
+    if (this.error?.status === 403) this.$router.push("/auth");
   },
   computed: {
     visitedPlaces() {

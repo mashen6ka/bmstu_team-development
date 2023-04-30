@@ -98,7 +98,8 @@ export default {
       await this.$store.dispatch("place/add", place);
 
       if (!this.error) {
-        this.$store.dispatch("place/getList");
+        await this.$store.dispatch("place/getList");
+        if (this.error?.status === 403) this.$router.push("/auth");
         this.showModal = false;
       } else if (this.error.status === 403) {
         this.$router.push("/auth");

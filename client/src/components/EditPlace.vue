@@ -14,7 +14,7 @@
         </b-container>
 
         <b-col align-self="center">
-          <b-button-close class="pl-0"></b-button-close>
+          <b-button-close class="pl-0" @click="close"></b-button-close>
         </b-col>
       </template>
 
@@ -103,7 +103,8 @@ export default {
       });
 
       if (!this.error) {
-        this.$store.dispatch("place/getList");
+        await this.$store.dispatch("place/getList");
+        if (this.error?.status === 403) this.$router.push("/auth");
         this.showModal = false;
       } else if (this.error.status === 403) {
         this.$router.push("/auth");
