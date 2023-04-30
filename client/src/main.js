@@ -28,6 +28,8 @@ import {
   BTab,
   BCard,
   BNavItem,
+  BIconBoxArrowRight,
+  BIconPlusCircle,
 } from "bootstrap-vue";
 
 Vue.component("BRow", BRow);
@@ -50,6 +52,8 @@ Vue.component("BTabs", BTabs);
 Vue.component("BTab", BTab);
 Vue.component("BCard", BCard);
 Vue.component("BNavItem", BNavItem);
+Vue.component("BIconBoxArrowRight", BIconBoxArrowRight);
+Vue.component("BIconPlusCircle", BIconPlusCircle);
 
 Vue.config.productionTip = false;
 Vue.use(Vuelidate);

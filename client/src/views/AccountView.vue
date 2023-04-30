@@ -1,7 +1,12 @@
 <template>
   <div>
     <b-row class="text-right m-3">
-      <b-col><b-link @click="logout">Logout</b-link> </b-col>
+      <b-col
+        ><b-link @click="logout"
+          >Logout
+          <b-icon-box-arrow-right variant="primary"></b-icon-box-arrow-right
+        ></b-link>
+      </b-col>
     </b-row>
     <b-card no-body class="m-3">
       <b-tabs content-class="mt-3" card>
@@ -17,8 +22,8 @@
             role="presentation"
             @click.prevent="showAddModal = true"
             href="#"
-            ><b>+</b></b-nav-item
-          >
+            ><b-icon-plus-circle variant="primary"></b-icon-plus-circle
+          ></b-nav-item>
         </template>
       </b-tabs>
     </b-card>
