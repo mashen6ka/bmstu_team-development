@@ -13,7 +13,7 @@
         </b-container>
 
         <b-col align-self="center">
-          <b-button-close class="px-0"></b-button-close>
+          <b-button-close class="pl-0"></b-button-close>
         </b-col>
       </template>
 
