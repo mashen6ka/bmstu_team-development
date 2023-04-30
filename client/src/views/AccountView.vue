@@ -70,8 +70,8 @@ export default {
     };
   },
   methods: {
-    async logout() {
-      this.$store.dispatch["auth/logout"];
+    logout() {
+      this.$store.dispatch("auth/logout");
       this.$router.push("/auth");
     },
   },
