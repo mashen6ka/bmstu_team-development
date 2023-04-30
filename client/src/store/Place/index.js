@@ -14,7 +14,7 @@ const getters = {
 };
 
 const mutations = {
-  setPlaceList: (state, placeList) => (state.place = placeList),
+  setList: (state, placeList) => (state.placeList = placeList),
   setError: (state, error) => (state.error = error),
 };
 
@@ -94,7 +94,6 @@ const actions = {
     try {
       const authHeader = buildAuthHeader();
       if (!authHeader) throw new BaseError(403);
-
       try {
         const res = await axios.get(
           process.env.VUE_APP_SERVER_ADDRESS + `/places`,
@@ -103,9 +102,8 @@ const actions = {
             headers: { Authorization: authHeader },
           }
         );
-        console.log(res);
         context.commit("setError", null);
-        // context.commit("setPlaceList", );
+        context.commit("setList", res.data);
       } catch (err) {
         throw new BaseError(err.response.status);
       }
