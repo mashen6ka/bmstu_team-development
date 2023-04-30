@@ -72,9 +72,10 @@ export default {
       });
 
       if (!this.error) {
+        this.$store.dispatch("place/getList");
         this.showModal = false;
       } else if (this.error.status === 403) {
-        this.$router.push("auth");
+        this.$router.push("/auth");
       }
     },
   },

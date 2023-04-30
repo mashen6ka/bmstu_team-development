@@ -4,7 +4,7 @@
       <b-list-group-item
         v-for="place in placeList"
         :key="place.id"
-        class="border-0 py-1"
+        class="border-0 py-1 px-0"
       >
         <div class="card-body p-0 border rounded">
           <div class="my-0 p-0 text-left card-header" style="height: 2rem">
@@ -64,7 +64,9 @@
       </b-list-group-item>
     </b-list-group>
     <DeletePlace v-if="showDeleteModal" v-bind:place="place"></DeletePlace>
-    <p v-if="placeList.length === 0">Oops! No places available</p>
+    <div class="mx-3">
+      <p v-if="placeList.length === 0">Oops! No places available</p>
+    </div>
   </div>
 </template>
 
@@ -116,7 +118,7 @@ export default {
       if (!this.error) {
         this.showModal = false;
       } else if (this.error.status === 403) {
-        this.$router.push("auth");
+        this.$router.push("/auth");
       }
     },
     async movePlace() {
@@ -131,7 +133,7 @@ export default {
       if (!this.error) {
         this.showModal = false;
       } else if (this.error.status === 403) {
-        this.$router.push("auth");
+        this.$router.push("/auth");
       }
     },
   },

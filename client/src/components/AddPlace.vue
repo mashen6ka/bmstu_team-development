@@ -89,17 +89,19 @@ export default {
       this.$emit("close");
     },
     async addPlace() {
-      await this.$store.dispatch("place/add", {
+      const place = {
         title: this.title,
         isVisited: this.isVisited,
         cardText: this.cardText,
         dttmUpdate: Math.floor(Date.now() / 1000),
-      });
+      };
+      await this.$store.dispatch("place/add", place);
 
       if (!this.error) {
+        this.$store.dispatch("place/getList");
         this.showModal = false;
       } else if (this.error.status === 403) {
-        this.$router.push("auth");
+        this.$router.push("/auth");
       }
     },
   },

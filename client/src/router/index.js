@@ -8,13 +8,6 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "home",
-    redirect: () => {
-      return "account";
-    },
-  },
-  {
     path: "/auth",
     name: "auth",
     component: AuthView,
@@ -28,6 +21,12 @@ const routes = [
     path: "/account",
     name: "account",
     component: AccountView,
+  },
+  {
+    path: "/*",
+    redirect: () => {
+      return "account";
+    },
   },
 ];
 

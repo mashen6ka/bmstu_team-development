@@ -71,6 +71,12 @@
 
 <script>
 export default {
+  mounted() {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      this.$router.push("/account");
+    }
+  },
   computed: {
     error() {
       return this.$store.getters["auth/error"];
@@ -94,13 +100,13 @@ export default {
 
       if (!this.error) {
         this.showModal = false;
-        this.$router.push("auth");
+        this.$router.push("/auth");
       }
     },
     goToAuth() {
       this.$store.commit("auth/setError", null);
       this.showModal = false;
-      this.$router.push("auth");
+      this.$router.push("/auth");
     },
   },
 };
