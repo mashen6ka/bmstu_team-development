@@ -105,35 +105,13 @@ public class UserService {
             if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
                 final UserEntity user = repo.getUserById(id);
                 final String accessToken = jwtProvider.generateAccessToken(user);
-                return new JwtResponseDTO(accessToken, refreshToken);
-            }
-        }
-
-        throw new AuthException("Невалидный JWT токен");
-    }
-
-    /**
-     * Получение свежего токена refresh (и вместе с ним генерируется access-токен)
-     * @param refreshToken refresh-токен, полученный от пользователя
-     * @return сущность с информацией о сгенерированных для пользователя токенах
-     * @throws AuthException при невалидном refresh-токене
-     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
-     */
-    public JwtResponseDTO refresh(@NonNull String refreshToken) throws AuthException, SQLException {
-        if (jwtProvider.validateRefreshToken(refreshToken)) {
-            final Claims claims = jwtProvider.getRefreshClaims(refreshToken);
-            final int id = claims.get("id", Integer.class);
-            final String saveRefreshToken = refreshStorage.get(id);
-
-            if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
-                final UserEntity user = repo.getUserById(id);
-                final String accessToken = jwtProvider.generateAccessToken(user);
                 final String newRefreshToken = jwtProvider.generateRefreshToken(user);
-
+                refreshStorage.remove(user.getId());
                 refreshStorage.put(user.getId(), newRefreshToken);
                 return new JwtResponseDTO(accessToken, newRefreshToken);
             }
         }
+
         throw new AuthException("Невалидный JWT токен");
     }
 

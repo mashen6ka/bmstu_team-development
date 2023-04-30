@@ -100,23 +100,6 @@ public class UserController {
     }
 
     /**
-     * Получение свежего токена refresh (и вместе с ним генерируется access-токен)
-     * @param refreshToken refresh-токен, полученный от пользователя
-     * @return сущность с информацией о сгенерированных для пользователя токенах и статус 201 CREATED,
-     * при неверном refresh-токене возвращается 403 FORBIDDEN
-     * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
-     */
-    @Operation(summary = "Update refresh token")
-    @PostMapping("/refresh")
-    public ResponseEntity<JwtResponseDTO> refresh(@RequestBody String refreshToken) throws SQLException {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(userService.refresh(refreshToken));
-        } catch (AuthException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-    }
-
-    /**
      * Получение свежего токена access
      * @param refreshToken refresh-токен, полученный от пользователя
      * @return сущность с информацией о сгенерированных для пользователя токенах и статус 201 CREATED,
@@ -124,8 +107,8 @@ public class UserController {
      * @throws SQLException при неуспешном подключении или внутренней ошибке базы данных
      */
     @Operation(summary = "Update access token")
-    @PostMapping("/access")
-    public ResponseEntity<JwtResponseDTO> access(@RequestBody String refreshToken) throws SQLException {
+    @PostMapping("/refresh")
+    public ResponseEntity<JwtResponseDTO> updateAccess(@RequestBody String refreshToken) throws SQLException {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(userService.getAccessToken(refreshToken));
         } catch (AuthException e) {
