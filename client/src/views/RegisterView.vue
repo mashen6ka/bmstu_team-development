@@ -11,7 +11,7 @@
     >
       <template #modal-header>
         <b-container class="mt-2 text-center">
-          <h3>Register</h3>
+          <h3>Sign up</h3>
         </b-container>
       </template>
       <b-container class="mb-4">
@@ -53,7 +53,7 @@
               class="flex-fill"
               variant="primary"
             >
-              Register
+              Sign up
             </b-button>
           </b-col>
         </b-row>
@@ -70,25 +70,12 @@
 </template>
 
 <script>
-import {
-  BRow,
-  BCol,
-  BModal,
-  BButton,
-  BContainer,
-  BFormInput,
-  BLink,
-} from "bootstrap-vue";
-
 export default {
-  components: {
-    BRow,
-    BCol,
-    BModal,
-    BButton,
-    BContainer,
-    BFormInput,
-    BLink,
+  mounted() {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      this.$router.push("/account");
+    }
   },
   computed: {
     error() {
@@ -113,13 +100,13 @@ export default {
 
       if (!this.error) {
         this.showModal = false;
-        this.$router.push("auth");
+        this.$router.push("/signin");
       }
     },
     goToAuth() {
       this.$store.commit("auth/setError", null);
       this.showModal = false;
-      this.$router.push("auth");
+      this.$router.push("/signin");
     },
   },
 };

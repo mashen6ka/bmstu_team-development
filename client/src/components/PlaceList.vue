@@ -4,11 +4,12 @@
       <b-list-group-item
         v-for="place in placeList"
         :key="place.id"
-        class="border-0 py-1"
+        class="border-0 py-1 px-0"
       >
         <div class="card-body p-0 border rounded">
           <div class="my-0 p-0 text-left card-header" style="height: 2rem">
             <b-button
+              @click="movePlace(place)"
               v-if="place.isVisited"
               variant="light"
               class="first_button"
@@ -16,6 +17,7 @@
               <b-icon-x-circle variant="primary" class="icon"></b-icon-x-circle>
             </b-button>
             <b-button
+              @click="movePlace(place)"
               class="first_button"
               v-if="!place.isVisited"
               variant="light"
@@ -25,7 +27,10 @@
                 class="icon"
               ></b-icon-check-circle>
             </b-button>
-            <b-button variant="light" class="non_first_button"
+            <b-button
+              @click="editPlace(place)"
+              variant="light"
+              class="non_first_button"
               ><b-icon-pencil variant="primary" class="icon"></b-icon-pencil
             ></b-button>
             <b-button
@@ -63,25 +68,26 @@
         </div>
       </b-list-group-item>
     </b-list-group>
-    <DeletePlace v-if="showDeleteModal" v-bind:place="place"></DeletePlace>
-    <p v-if="placeList.length === 0">Oops! No places available</p>
+    <DeletePlace
+      v-if="showDeleteModal"
+      v-bind:place="place"
+      @close="showDeleteModal = false"
+    ></DeletePlace>
+    <EditPlace
+      v-if="showEditModal"
+      v-bind:place="place"
+      @close="showEditModal = false"
+    ></EditPlace>
+    <div class="mx-3">
+      <p v-if="placeList.length === 0">Oops! No places available</p>
+    </div>
   </div>
 </template>
 
 <script>
 import formatTimestamp from "../format-timestamp";
-import {
-  BRow,
-  BCol,
-  BButton,
-  BListGroup,
-  BListGroupItem,
-  BIconXCircle,
-  BIconCheckCircle,
-  BIconPencil,
-  BIconTrash,
-} from "bootstrap-vue";
 import DeletePlace from "./DeletePlace.vue";
+import EditPlace from "./EditPlace.vue";
 
 export default {
   name: "PlaceList",
@@ -92,16 +98,8 @@ export default {
     },
   },
   components: {
-    BRow,
-    BCol,
-    BButton,
-    BListGroup,
-    BListGroupItem,
-    BIconXCircle,
-    BIconCheckCircle,
-    BIconPencil,
-    BIconTrash,
     DeletePlace,
+    EditPlace,
   },
   computed: {
     error() {
@@ -111,6 +109,7 @@ export default {
   data() {
     return {
       showDeleteModal: false,
+      showEditModal: false,
       place: null,
       formatTimestamp,
     };
@@ -120,38 +119,26 @@ export default {
       this.$emit("close");
     },
     async deletePlace(place) {
-      console.log(place);
       this.place = place;
       this.showDeleteModal = true;
     },
-    async editPlace() {
-      await this.$store.dispatch("place/edit", {
-        id: this.place.id,
-        title: this.title,
-        isVisited: this.isVisited,
-        cardText: this.cardText,
-        dttmUpdate: Math.floor(Date.now() / 1000),
-      });
-
-      if (!this.error) {
-        this.showModal = false;
-      } else if (this.error.status === 403) {
-        this.$router.push("auth");
-      }
+    async editPlace(place) {
+      this.place = place;
+      this.showEditModal = true;
     },
-    async movePlace() {
-      await this.$store.dispatch("place/edit", {
+    async movePlace(place) {
+      this.place = place;
+      await this.$store.dispatch("place/move", {
         id: this.place.id,
-        title: this.title,
-        isVisited: this.isVisited,
-        cardText: this.cardText,
+        isVisited: !this.place.isVisited,
         dttmUpdate: Math.floor(Date.now() / 1000),
       });
 
       if (!this.error) {
-        this.showModal = false;
+        await this.$store.dispatch("place/getList");
+        if (this.error?.status === 403) this.$router.push("/signin");
       } else if (this.error.status === 403) {
-        this.$router.push("auth");
+        this.$router.push("/signin");
       }
     },
   },

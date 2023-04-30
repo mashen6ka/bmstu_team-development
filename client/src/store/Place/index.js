@@ -1,6 +1,5 @@
 import axios from "axios";
 import buildAuthHeader from "../build-auth-header";
-import getUserId from "../get-user-id";
 import { BaseError } from "../error";
 
 const state = {
@@ -14,7 +13,7 @@ const getters = {
 };
 
 const mutations = {
-  setPlaceList: (state, placeList) => (state.place = placeList),
+  setList: (state, placeList) => (state.placeList = placeList),
   setError: (state, error) => (state.error = error),
 };
 
@@ -24,12 +23,11 @@ const actions = {
       if (title === "") throw new BaseError(400, "Empty title!");
       const authHeader = buildAuthHeader();
       if (!authHeader) throw new BaseError(403);
-      const authorId = getUserId();
 
       try {
         await axios.post(
           process.env.VUE_APP_SERVER_ADDRESS + "/places",
-          { authorId, title, isVisited, cardText, dttmUpdate },
+          { title, isVisited, cardText, dttmUpdate },
           {
             withCredentials: false,
             headers: { Authorization: authHeader },
@@ -41,6 +39,10 @@ const actions = {
       }
     } catch (err) {
       context.commit("setError", err);
+      if (err.status === 403) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+      }
     }
   },
   edit: async (context, { id, title, isVisited, cardText, dttmUpdate }) => {
@@ -48,12 +50,11 @@ const actions = {
       if (title === "") throw new BaseError(400, "Empty title!");
       const authHeader = buildAuthHeader();
       if (!authHeader) throw new BaseError(403);
-      const authorId = getUserId();
 
       try {
         await axios.put(
           process.env.VUE_APP_SERVER_ADDRESS + `/places/${id}`,
-          { authorId, title, isVisited, cardText, dttmUpdate },
+          { title, isVisited, cardText, dttmUpdate },
           {
             withCredentials: false,
             headers: { Authorization: authHeader },
@@ -66,6 +67,36 @@ const actions = {
       }
     } catch (err) {
       context.commit("setError", err);
+      if (err.status === 403) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+      }
+    }
+  },
+  move: async (context, { id, isVisited, dttmUpdate }) => {
+    try {
+      const authHeader = buildAuthHeader();
+      if (!authHeader) throw new BaseError(403);
+      try {
+        await axios.patch(
+          process.env.VUE_APP_SERVER_ADDRESS + `/places/${id}`,
+          { isVisited, dttmUpdate },
+          {
+            withCredentials: false,
+            headers: { Authorization: authHeader },
+          }
+        );
+
+        context.commit("setError", null);
+      } catch (err) {
+        throw new BaseError(err.response.status);
+      }
+    } catch (err) {
+      context.commit("setError", err);
+      if (err.status === 403) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+      }
     }
   },
   delete: async (context, { id }) => {
@@ -88,13 +119,16 @@ const actions = {
       }
     } catch (err) {
       context.commit("setError", err);
+      if (err.status === 403) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+      }
     }
   },
   getList: async (context) => {
     try {
       const authHeader = buildAuthHeader();
       if (!authHeader) throw new BaseError(403);
-
       try {
         const res = await axios.get(
           process.env.VUE_APP_SERVER_ADDRESS + `/places`,
@@ -103,14 +137,17 @@ const actions = {
             headers: { Authorization: authHeader },
           }
         );
-        console.log(res);
         context.commit("setError", null);
-        // context.commit("setPlaceList", );
+        context.commit("setList", res.data);
       } catch (err) {
         throw new BaseError(err.response.status);
       }
     } catch (err) {
       context.commit("setError", err);
+      if (err.status === 403) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+      }
     }
   },
 };

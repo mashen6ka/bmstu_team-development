@@ -6,6 +6,7 @@
       v-model="showModal"
       centered
       hide-footer
+      @hide="close"
     >
       <b-container class="mb-4">
         <b-row class="mx-1">
@@ -43,8 +44,6 @@
 </template>
 
 <script>
-import { BRow, BCol, BModal, BButton, BContainer } from "bootstrap-vue";
-
 export default {
   name: "DeletePlace",
   props: {
@@ -52,14 +51,6 @@ export default {
       type: Object,
       required: true,
     },
-  },
-
-  components: {
-    BRow,
-    BCol,
-    BModal,
-    BButton,
-    BContainer,
   },
   computed: {
     error() {
@@ -81,9 +72,11 @@ export default {
       });
 
       if (!this.error) {
+        await this.$store.dispatch("place/getList");
+        if (this.error?.status === 403) this.$router.push("/signin");
         this.showModal = false;
       } else if (this.error.status === 403) {
-        this.$router.push("auth");
+        this.$router.push("/signin");
       }
     },
   },

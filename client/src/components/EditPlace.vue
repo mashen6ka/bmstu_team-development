@@ -6,6 +6,7 @@
       v-model="showModal"
       centered
       hide-footer
+      @hide="close"
     >
       <template #modal-header>
         <b-container class="mt-2 text-left">
@@ -13,7 +14,7 @@
         </b-container>
 
         <b-col align-self="center">
-          <b-button-close class="pl-0"></b-button-close>
+          <b-button-close class="pl-0" @click="close"></b-button-close>
         </b-col>
       </template>
 
@@ -67,18 +68,6 @@
 </template>
 
 <script>
-import {
-  BRow,
-  BCol,
-  BModal,
-  BButton,
-  BContainer,
-  BFormCheckbox,
-  BFormTextarea,
-  BFormInput,
-  BButtonClose,
-} from "bootstrap-vue";
-
 export default {
   name: "EditPlace",
   props: {
@@ -86,17 +75,6 @@ export default {
       type: Object,
       required: true,
     },
-  },
-  components: {
-    BRow,
-    BCol,
-    BModal,
-    BButton,
-    BContainer,
-    BFormInput,
-    BFormCheckbox,
-    BFormTextarea,
-    BButtonClose,
   },
   computed: {
     error() {
@@ -125,9 +103,11 @@ export default {
       });
 
       if (!this.error) {
+        await this.$store.dispatch("place/getList");
+        if (this.error?.status === 403) this.$router.push("/signin");
         this.showModal = false;
       } else if (this.error.status === 403) {
-        this.$router.push("auth");
+        this.$router.push("/signin");
       }
     },
   },

@@ -2,26 +2,31 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import AuthView from "../views/AuthView.vue";
 import RegisterView from "../views/RegisterView.vue";
+import AccountView from "../views/AccountView.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "home",
-    // redirect: () => {
-    //   return "account";
-    // },
-  },
-  {
-    path: "/auth",
-    name: "auth",
+    path: "/signin",
+    name: "signin",
     component: AuthView,
   },
   {
-    path: "/register",
-    name: "register",
+    path: "/signup",
+    name: "signup",
     component: RegisterView,
+  },
+  {
+    path: "/account",
+    name: "account",
+    component: AccountView,
+  },
+  {
+    path: "/*",
+    redirect: () => {
+      return "account";
+    },
   },
 ];
 
