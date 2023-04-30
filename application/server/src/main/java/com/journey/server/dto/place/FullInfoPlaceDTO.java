@@ -14,6 +14,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FullInfoPlaceDTO {
     /**
+     * Идентификатор места
+     */
+    int id;
+
+    /**
      * Имя пользователя, создавшего карточку места
      */
     String authorName;
