@@ -97,7 +97,7 @@ export default {
     goToRegister() {
       this.$store.commit("auth/setError", null);
       this.showModal = false;
-      this.$router.push("/register");
+      this.$router.push("/signup");
     },
   },
 };

@@ -8,13 +8,13 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/auth",
-    name: "auth",
+    path: "/signin",
+    name: "signin",
     component: AuthView,
   },
   {
-    path: "/register",
-    name: "register",
+    path: "/signup",
+    name: "signup",
     component: RegisterView,
   },
   {

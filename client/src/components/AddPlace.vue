@@ -99,10 +99,10 @@ export default {
 
       if (!this.error) {
         await this.$store.dispatch("place/getList");
-        if (this.error?.status === 403) this.$router.push("/auth");
+        if (this.error?.status === 403) this.$router.push("/signin");
         this.showModal = false;
       } else if (this.error.status === 403) {
-        this.$router.push("/auth");
+        this.$router.push("/signin");
       }
     },
   },
