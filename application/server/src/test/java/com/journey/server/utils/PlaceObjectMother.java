@@ -9,7 +9,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 public class PlaceObjectMother {
-    private static int dtTime = (int) LocalDateTime.of(2023, Month.APRIL, 20, 15, 12).toEpochSecond(ZoneOffset.UTC);
+    private static int dtTime = 1682003554;
 
     public static CreatePlaceDTO getSomeNewInputPlace() {
         return CreatePlaceDTO.builder()
