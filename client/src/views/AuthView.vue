@@ -18,9 +18,7 @@
         <b-row class="mx-1">
           <b-col class="px-0">
             <b-container class="text-center">
-              <span v-if="errorMessage" class="text-danger">
-                {{ errorMessage }}</span
-              >
+              <span v-if="error" class="text-danger"> {{ error.message }}</span>
             </b-container>
           </b-col>
         </b-row>
@@ -56,7 +54,7 @@
 
         <b-row class="mb-3 mx-1 text-right">
           <b-col>
-            <router-link to="/register">Not registered?</router-link>
+            <b-link @click="goToRegister">Not registered?</b-link>
           </b-col>
         </b-row>
       </b-container>
@@ -72,6 +70,7 @@ import {
   BButton,
   BContainer,
   BFormInput,
+  BLink,
 } from "bootstrap-vue";
 
 export default {
@@ -82,9 +81,10 @@ export default {
     BButton,
     BContainer,
     BFormInput,
+    BLink,
   },
   computed: {
-    errorMessage() {
+    error() {
       return this.$store.getters["auth/error"];
     },
   },
@@ -97,24 +97,20 @@ export default {
   },
   methods: {
     async authorize() {
-      if (this.login === "") {
-        this.$store.commit("auth/setError", "Empty login!");
-        return;
-      }
-      if (this.password === "") {
-        this.$store.commit("auth/setError", "Empty password!");
-        return;
-      }
-
       await this.$store.dispatch("auth/login", {
         login: this.login,
         password: this.password,
       });
 
-      if (!this.errorMessage) {
+      if (!this.error) {
         this.showModal = false;
         this.$router.push("home");
       }
+    },
+    goToRegister() {
+      this.$store.commit("auth/setError", null);
+      this.showModal = false;
+      this.$router.push("register");
     },
   },
 };

@@ -19,6 +19,14 @@ const mutations = {
 
 const actions = {
   login: async (context, { login, password }) => {
+    if (login === "") {
+      context.commit("setError", { message: "Empty login!", status: 400 });
+      return;
+    }
+    if (password === "") {
+      context.commit("setError", { message: "Empty password!", status: 400 });
+      return;
+    }
     const authHeader = buildAuthHeader();
     try {
       const res = await axios.post(
@@ -35,10 +43,10 @@ const actions = {
       localStorage.setItem("refreshToken", res.data.refreshToken);
     } catch (err) {
       const status = err.response.status;
-      let errorText;
-      if (status === 403) errorText = "Incorrect login or password";
-      else if (status === 500) errorText = "Internal server error";
-      context.commit("setError", errorText);
+      let errorMessage;
+      if (status === 403) errorMessage = "Incorrect login or password";
+      else if (status === 500) errorMessage = "Internal server error";
+      context.commit("setError", { message: errorMessage, status: status });
     }
   },
   logout: () => {
@@ -46,23 +54,35 @@ const actions = {
     localStorage.removeItem("refreshToken");
   },
   register: async (context, { login, password, name }) => {
-    axios
-      .post(process.env.VUE_APP_SERVER_ADDRESS + "/register", {
+    if (login === "") {
+      context.commit("setError", { message: "Empty login!", status: 400 });
+      return;
+    }
+    if (password === "") {
+      context.commit("setError", { message: "Empty login!", status: 400 });
+      return;
+    }
+    if (name === "") {
+      context.commit("contextsetError", {
+        message: "Empty name!",
+        status: 400,
+      });
+      return;
+    }
+    try {
+      await axios.post(process.env.VUE_APP_SERVER_ADDRESS + "/register", {
         login: login,
         hash: hash(password),
         name: name,
-      })
-      .then(() => {
-        context.commit("setError", "");
-      })
-      .catch((err) => {
-        const status = err.response.status;
-        let errorText;
-        if (status === 409) errorText = "This login is already taken :(";
-        else if (status === 500) errorText = "Internal server error";
-
-        context.commit("setError", errorText);
       });
+      context.commit("setError", "");
+    } catch (err) {
+      const status = err.response.status;
+      let errorMessage;
+      if (status === 409) errorMessage = "This login is already taken :(";
+      else if (status === 500) errorMessage = "Internal server error";
+      context.commit("setError", { message: errorMessage, status: status });
+    }
   },
 };
 
