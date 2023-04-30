@@ -45,6 +45,25 @@ const actions = {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
   },
+  register: async (context, { login, password, name }) => {
+    axios
+      .post(process.env.VUE_APP_SERVER_ADDRESS + "/register", {
+        login: login,
+        hash: hash(password),
+        name: name,
+      })
+      .then(() => {
+        context.commit("setError", "");
+      })
+      .catch((err) => {
+        const status = err.response.status;
+        let errorText;
+        if (status === 409) errorText = "This login is already taken :(";
+        else if (status === 500) errorText = "Internal server error";
+
+        context.commit("setError", errorText);
+      });
+  },
 };
 
 export default {
