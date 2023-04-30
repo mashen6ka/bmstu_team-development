@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     async register() {
-      this.$store.dispatch("auth/register", {
+      await this.$store.dispatch("auth/register", {
         login: this.login,
         password: this.password,
         name: this.name,
