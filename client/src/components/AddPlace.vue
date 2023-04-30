@@ -6,6 +6,7 @@
       v-model="showModal"
       centered
       hide-footer
+      @hide="close"
     >
       <template #modal-header>
         <b-container class="mt-2 text-left">
@@ -13,7 +14,7 @@
         </b-container>
 
         <b-col align-self="center">
-          <b-button-close class="pl-0"></b-button-close>
+          <b-button-close class="pl-0" @click="close"></b-button-close>
         </b-col>
       </template>
 

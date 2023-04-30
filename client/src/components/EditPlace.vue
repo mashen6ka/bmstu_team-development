@@ -6,6 +6,7 @@
       v-model="showModal"
       centered
       hide-footer
+      @hide="close"
     >
       <template #modal-header>
         <b-container class="mt-2 text-left">

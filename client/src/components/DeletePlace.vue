@@ -6,6 +6,7 @@
       v-model="showModal"
       centered
       hide-footer
+      @hide="close"
     >
       <b-container class="mb-4">
         <b-row class="mx-1">
