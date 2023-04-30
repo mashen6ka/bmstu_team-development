@@ -68,6 +68,29 @@ const actions = {
       context.commit("setError", err);
     }
   },
+
+  delete: async (context, { id }) => {
+    try {
+      const authHeader = buildAuthHeader();
+      if (!authHeader) throw new BaseError(403);
+
+      try {
+        await axios.delete(
+          process.env.VUE_APP_SERVER_ADDRESS + `/places/${id}`,
+          {
+            withCredentials: false,
+            headers: { Authorization: authHeader },
+          }
+        );
+
+        context.commit("setError", null);
+      } catch (err) {
+        throw new BaseError(err.response.status);
+      }
+    } catch (err) {
+      context.commit("setError", err);
+    }
+  },
 };
 
 export default {
