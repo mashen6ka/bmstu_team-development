@@ -3,7 +3,10 @@
     <b-row class="m-3">
       <b-col class="text-left">
         <h3 class="text-primary">
-          Journey <b-icon-pin-map-fill variant="primary"></b-icon-pin-map-fill>
+          Journey
+          <b-icon-signpost-split-fill
+            variant="primary"
+          ></b-icon-signpost-split-fill>
         </h3>
       </b-col>
       <b-col class="text-right" align-self="center"
