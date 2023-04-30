@@ -8,16 +8,20 @@
       hide-footer
     >
       <template #modal-header>
-        <b-container class="mt-2 text-center">
+        <b-container class="mt-2 text-left">
           <h3>Create place</h3>
         </b-container>
+
+        <b-col align-self="center">
+          <b-button-close class="px-0"></b-button-close>
+        </b-col>
       </template>
 
       <b-container class="mb-4">
         <b-row class="mx-1">
           <b-col class="px-0">
             <b-container class="text-center">
-              <span v-if="error" class="text-danger"> {{ error.text }}</span>
+              <span v-if="error" class="text-danger"> {{ error.message }}</span>
             </b-container>
           </b-col>
         </b-row>
@@ -106,11 +110,6 @@ export default {
       this.$emit("close");
     },
     async addPlace() {
-      if (this.title === "") {
-        this.$store.commit("place/setError", "Empty title!");
-        return;
-      }
-
       await this.$store.dispatch("place/add", {
         title: this.title,
         isVisited: this.isVisited,
