@@ -45,18 +45,12 @@ export default {
       this.$router.push("/auth");
     }
     Promise.all([this.$store.dispatch("place/getList")]);
-    console.log("HERE", this.$store.getters["place/placeList"]);
   },
   computed: {
     visitedPlaces() {
       return this.$store.getters["place/placeList"].filter((e) => e.isVisited);
     },
     favouritePlaces() {
-      console.log("FAVOURITE");
-      console.log(
-        this.$store.getters["place/placeList"].filter((e) => !e.isVisited)
-      );
-      console.log(this.$store.getters["place/placeList"]);
       return this.$store.getters["place/placeList"].filter((e) => !e.isVisited);
     },
     error() {

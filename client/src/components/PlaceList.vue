@@ -63,7 +63,11 @@
         </div>
       </b-list-group-item>
     </b-list-group>
-    <DeletePlace v-if="showDeleteModal" v-bind:place="place"></DeletePlace>
+    <DeletePlace
+      v-if="showDeleteModal"
+      v-bind:place="place"
+      @close="showDeleteModal = false"
+    ></DeletePlace>
     <div class="mx-3">
       <p v-if="placeList.length === 0">Oops! No places available</p>
     </div>
@@ -102,7 +106,6 @@ export default {
       this.$emit("close");
     },
     async deletePlace(place) {
-      console.log(place);
       this.place = place;
       this.showDeleteModal = true;
     },
