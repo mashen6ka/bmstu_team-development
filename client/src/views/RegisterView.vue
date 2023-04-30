@@ -92,7 +92,6 @@ export default {
   },
   computed: {
     error() {
-      console.log(this.$store.getters["auth/error"]);
       return this.$store.getters["auth/error"];
     },
   },

@@ -1,6 +1,7 @@
 import axios from "axios";
 import buildAuthHeader from "../build-auth-header";
 import getUserId from "../get-user-id";
+import { BaseError } from "../error";
 
 const state = {
   placeList: [],
@@ -19,26 +20,27 @@ const mutations = {
 
 const actions = {
   add: async (context, { title, isVisited, cardText, dttmUpdate }) => {
-    const authHeader = buildAuthHeader();
-    const authorId = getUserId();
     try {
-      await axios.post(
-        process.env.VUE_APP_SERVER_ADDRESS + "/places",
-        { authorId, title, isVisited, cardText, dttmUpdate },
-        {
-          withCredentials: false,
-          headers: { Authorization: authHeader },
-        }
-      );
+      if (title === "") throw new BaseError(400, "Empty title!");
+      const authHeader = buildAuthHeader();
+      if (!authHeader) throw new BaseError(403);
+      const authorId = getUserId();
 
-      context.commit("setError", null);
+      try {
+        await axios.post(
+          process.env.VUE_APP_SERVER_ADDRESS + "/places",
+          { authorId, title, isVisited, cardText, dttmUpdate },
+          {
+            withCredentials: false,
+            headers: { Authorization: authHeader },
+          }
+        );
+        context.commit("setError", null);
+      } catch (err) {
+        throw new BaseError(err.response.status);
+      }
     } catch (err) {
-      const status = err.response.status;
-      let errorMessage;
-      if (status === 403) errorMessage = "";
-      else if (status === 500) errorMessage = "Internal server error";
-
-      context.commit("setError", { message: errorMessage, status: status });
+      context.commit("setError", err);
     }
   },
 };
