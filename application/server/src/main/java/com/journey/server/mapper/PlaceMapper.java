@@ -29,6 +29,7 @@ public class PlaceMapper {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         return FullInfoPlaceDTO.builder()
+                .id(place.getId())
                 .title(place.getTitle())
                 .authorName(user.getName())
                 .cardText(place.getCardText())
