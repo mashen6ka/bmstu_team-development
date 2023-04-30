@@ -1,13 +1,17 @@
 package com.journey.server.dto.place;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Сущность DTO, содержащая информацию о месте, которую указывает пользователь при создании/редактировании
  */
 @Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreatePlaceDTO {
     /**
      * Идентификатор пользователя, создавшего карточку места
