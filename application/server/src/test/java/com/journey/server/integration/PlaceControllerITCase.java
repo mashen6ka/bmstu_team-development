@@ -12,12 +12,19 @@ import org.junit.runner.RunWith;
 
 import static com.journey.server.utils.Assertions.assertDTOEquals;
 import static com.journey.server.utils.PlaceObjectMother.*;
+import static com.journey.server.utils.JwtObjectMother.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
@@ -30,12 +37,20 @@ public class PlaceControllerITCase {
     @Autowired
     private PlaceController controller;
 
+    private MockedStatic<SecurityContextHolder> holder;
+
+    @Mock
+    private SecurityContext context;
+
     @Before
     public void setUp() throws IOException, InterruptedException {
         String[] cmd = {"/bin/sh", "-c", "cd " + System.getProperty("user.dir")
                         + "/../sql && ./prepare_data.sh " + PropertiesUtil.get("db.password") + " && cd ../server"};
         Process p = Runtime.getRuntime().exec(cmd);
         p.waitFor();
+
+        holder = Mockito.mockStatic(SecurityContextHolder.class);
+        holder.when(SecurityContextHolder::getContext).thenReturn(context);
     }
 
     @After
@@ -44,21 +59,28 @@ public class PlaceControllerITCase {
                         + "/../sql && ./rollback_data.sh " + PropertiesUtil.get("db.password") + " && cd ../server"};
         Process p = Runtime.getRuntime().exec(cmd);
         p.waitFor();
+        holder.close();
     }
 
     @Test
-    public void getPlaceListByUserLengthITCase() throws SQLException {
+    public void getPlaceListOfTheUserLengthITCase() throws SQLException {
+        // arrange
+        Mockito.when(context.getAuthentication()).thenReturn(getAnotherAuthInfo());
+
         // act
-        ArrayList<FullInfoPlaceDTO> res = controller.getPlaceListByUserId(4);
+        ArrayList<FullInfoPlaceDTO> res = controller.getPlaceListOfTheUser();
 
         // assert
         assertEquals(res.size(), 3);
     }
 
     @Test
-    public void getPlaceListByUserRightUserITCase() throws SQLException {
+    public void getPlaceListOfTheUserRightUserITCase() throws SQLException {
+        // arrange
+        Mockito.when(context.getAuthentication()).thenReturn(getAnotherAuthInfo());
+
         // act
-        ArrayList<FullInfoPlaceDTO> res = controller.getPlaceListByUserId(4);
+        ArrayList<FullInfoPlaceDTO> res = controller.getPlaceListOfTheUser();
 
         // assert
         for (FullInfoPlaceDTO dto : res)
@@ -66,9 +88,12 @@ public class PlaceControllerITCase {
     }
 
     @Test
-    public void getPlaceListByUserNoSuchUserITCase() throws SQLException {
+    public void getPlaceListOfTheUserNoSuchUserITCase() throws SQLException {
+        // arrange
+        Mockito.when(context.getAuthentication()).thenReturn(getUnknownAuthInfo());
+
         // act
-        ArrayList<FullInfoPlaceDTO> res = controller.getPlaceListByUserId(100);
+        ArrayList<FullInfoPlaceDTO> res = controller.getPlaceListOfTheUser();
 
         // assert
         assertEquals(res.size(), 0);
@@ -77,6 +102,7 @@ public class PlaceControllerITCase {
     @Test
     public void getPlaceByIdITCase() throws Exception {
         // arrange
+        Mockito.when(context.getAuthentication()).thenReturn(getAuthInfo());
         FullInfoPlaceDTO outDTO = getSomeExistingOutputPlace();
 
         // act
@@ -89,6 +115,9 @@ public class PlaceControllerITCase {
 
     @Test
     public void getPlaceByIdNoSuchPlaceITCase() throws Exception {
+        // arrange
+        Mockito.when(context.getAuthentication()).thenReturn(getAuthInfo());
+
         // act
         HttpStatusCode httpStatusCode = controller.getPlaceById(100).getStatusCode();
 
@@ -98,6 +127,9 @@ public class PlaceControllerITCase {
 
     @Test
     public void deletePlaceByIdITCase() throws Exception {
+        // arrange
+        Mockito.when(context.getAuthentication()).thenReturn(getAuthInfo());
+
         // act
         controller.deletePlaceById(10);
         HttpStatusCode httpStatusCode = controller.getPlaceById(10).getStatusCode();
@@ -115,6 +147,8 @@ public class PlaceControllerITCase {
     @Test
     public void createPlaceITCase() throws Exception {
         // arrange
+        Mockito.when(context.getAuthentication()).thenReturn(getAuthInfo());
+
         CreatePlaceDTO inDTO = getSomeNewInputPlace();
         FullInfoPlaceDTO outDTO = getSomeNewOutputPlace();
 
@@ -135,9 +169,12 @@ public class PlaceControllerITCase {
     @Test
     public void updatePlaceByIdITCase() throws Exception {
         // arrange
+        Mockito.when(context.getAuthentication()).thenReturn(getAuthInfo());
+
         FullInfoPlaceDTO initDTO = getSomeExistingOutputPlace();
         CreatePlaceDTO inDTO = getSomeNewInputPlace();
         FullInfoPlaceDTO outDTO = getSomeNewOutputPlace();
+        outDTO.setId(12);
 
         // act
         FullInfoPlaceDTO dto = controller.getPlaceById(12).getBody();
@@ -158,6 +195,8 @@ public class PlaceControllerITCase {
     @Test
     public void updatePlaceByIdNoSuchPlaceITCase() throws Exception {
         // arrange
+        Mockito.when(context.getAuthentication()).thenReturn(getAuthInfo());
+
         CreatePlaceDTO inDTO = getSomeNewInputPlace();
 
         // act
@@ -193,6 +232,9 @@ public class PlaceControllerITCase {
 
     @Test
     public void updateIsVisitedNoSuchPlaceITCase() throws Exception {
+        // arrange
+        Mockito.when(context.getAuthentication()).thenReturn(getAuthInfo());
+
         // act
         controller.updateIsVisited(100, UpdateIsVisitedDTO.builder().isVisited(true).dttmUpdate(1682345338).build());
         HttpStatusCode httpStatusCode = controller.getPlaceById(100).getStatusCode();

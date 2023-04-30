@@ -5,6 +5,7 @@ import com.journey.server.dto.place.FullInfoPlaceDTO;
 
 public class Assertions {
     public static void assertDTOEquals(FullInfoPlaceDTO dto1, FullInfoPlaceDTO dto2) {
+        assertEquals(dto1.getId(), dto2.getId());
         assertEquals(dto1.getAuthorName(), dto2.getAuthorName());
         assertEquals(dto1.getTitle(), dto2.getTitle());
         assertEquals(dto1.isVisited(), dto2.isVisited());

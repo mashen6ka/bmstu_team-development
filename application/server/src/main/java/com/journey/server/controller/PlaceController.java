@@ -57,20 +57,20 @@ public class PlaceController {
     }
 
     /**
-     * Получение всех мест пользователя по его ID - запрос GET
-     * @param userId идентификатор пользователя, места которого требуется получить
+     * Получение всех мест пользователя по его ID (берется из токена) - запрос GET
      * @return список сущностей, описывающих места данного пользователя
      * @throws SQLException  при неуспешном подключении или внутренней ошибке базы данных
      */
     @Operation(summary = "Get place list by userId")
     @GetMapping
-    public ArrayList<FullInfoPlaceDTO> getPlaceListByUserId(@RequestParam int userId) throws SQLException {
+    public ArrayList<FullInfoPlaceDTO> getPlaceListOfTheUser() throws SQLException {
+        int userId = userService.getAuthInfo().getId();
+        String username = userService.getAuthInfo().getUsername();
         ArrayList<PlaceEntity> places = placeService.getPlaceListByUserId(userId);
-        UserEntity user = userService.getUserById(userId);
 
         ArrayList<FullInfoPlaceDTO> fullInfoPlaceDTOS = new ArrayList<>();
         for (PlaceEntity place : places) {
-            fullInfoPlaceDTOS.add(mapper.toFullInfoPlaceDTO(place, user));
+            fullInfoPlaceDTOS.add(mapper.toFullInfoPlaceDTO(place, username));
         }
 
         return fullInfoPlaceDTOS;
@@ -86,14 +86,17 @@ public class PlaceController {
     @Operation(summary = "Get place by id")
     @GetMapping("/{id:\\d+}")
     public ResponseEntity<FullInfoPlaceDTO> getPlaceById(@PathVariable int id) throws Exception {
+        String username = userService.getAuthInfo().getUsername();
+
         PlaceEntity place = placeService.getPlaceById(id);
         if (place == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        UserEntity user = userService.getUserById(place.getAuthorId());
+        if (place.getAuthorId() != userService.getAuthInfo().getId())
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
-        return ResponseEntity.status(HttpStatus.OK).body(mapper.toFullInfoPlaceDTO(place, user));
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toFullInfoPlaceDTO(place, username));
     }
 
     /**
@@ -117,7 +120,7 @@ public class PlaceController {
     @Operation(summary = "Create place")
     @PostMapping
     public ResponseEntity<String> createPlace(@RequestBody CreatePlaceDTO place) throws URISyntaxException, SQLException {
-        int id = placeService.createPlace(mapper.fromCreatePlaceDTO(place));
+        int id = placeService.createPlace(mapper.fromCreatePlaceDTO(place, userService.getAuthInfo().getId()));
 
         URI location = new URI("/places/" + id);
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -136,7 +139,7 @@ public class PlaceController {
     @PutMapping("/{id:\\d+}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePlace(@PathVariable int id, @RequestBody CreatePlaceDTO place) throws SQLException {
-        placeService.updatePlace(id, mapper.fromCreatePlaceDTO(place));
+        placeService.updatePlace(id, mapper.fromCreatePlaceDTO(place, userService.getAuthInfo().getId()));
     }
 
     /**
