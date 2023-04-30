@@ -9,6 +9,7 @@
         <div class="card-body p-0 border rounded">
           <div class="my-0 p-0 text-left card-header" style="height: 2rem">
             <b-button
+              @click="movePlace(place)"
               v-if="place.isVisited"
               variant="light"
               class="first_button"
@@ -16,6 +17,7 @@
               <b-icon-x-circle variant="primary" class="icon"></b-icon-x-circle>
             </b-button>
             <b-button
+              @click="movePlace(place)"
               class="first_button"
               v-if="!place.isVisited"
               variant="light"
@@ -124,17 +126,16 @@ export default {
       this.place = place;
       this.showEditModal = true;
     },
-    async movePlace() {
-      await this.$store.dispatch("place/edit", {
+    async movePlace(place) {
+      this.place = place;
+      await this.$store.dispatch("place/move", {
         id: this.place.id,
-        title: this.title,
-        isVisited: this.isVisited,
-        cardText: this.cardText,
+        isVisited: !this.place.isVisited,
         dttmUpdate: Math.floor(Date.now() / 1000),
       });
 
       if (!this.error) {
-        this.showModal = false;
+        this.$store.dispatch("place/getList");
       } else if (this.error.status === 403) {
         this.$router.push("/auth");
       }
