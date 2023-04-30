@@ -70,26 +70,7 @@
 </template>
 
 <script>
-import {
-  BRow,
-  BCol,
-  BModal,
-  BButton,
-  BContainer,
-  BFormInput,
-  BLink,
-} from "bootstrap-vue";
-
 export default {
-  components: {
-    BRow,
-    BCol,
-    BModal,
-    BButton,
-    BContainer,
-    BFormInput,
-    BLink,
-  },
   computed: {
     error() {
       return this.$store.getters["auth/error"];

@@ -70,17 +70,6 @@
 
 <script>
 import formatTimestamp from "../format-timestamp";
-import {
-  BRow,
-  BCol,
-  BButton,
-  BListGroup,
-  BListGroupItem,
-  BIconXCircle,
-  BIconCheckCircle,
-  BIconPencil,
-  BIconTrash,
-} from "bootstrap-vue";
 import DeletePlace from "./DeletePlace.vue";
 
 export default {
@@ -92,15 +81,6 @@ export default {
     },
   },
   components: {
-    BRow,
-    BCol,
-    BButton,
-    BListGroup,
-    BListGroupItem,
-    BIconXCircle,
-    BIconCheckCircle,
-    BIconPencil,
-    BIconTrash,
     DeletePlace,
   },
   computed: {

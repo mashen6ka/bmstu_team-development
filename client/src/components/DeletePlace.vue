@@ -43,8 +43,6 @@
 </template>
 
 <script>
-import { BRow, BCol, BModal, BButton, BContainer } from "bootstrap-vue";
-
 export default {
   name: "DeletePlace",
   props: {
@@ -52,14 +50,6 @@ export default {
       type: Object,
       required: true,
     },
-  },
-
-  components: {
-    BRow,
-    BCol,
-    BModal,
-    BButton,
-    BContainer,
   },
   computed: {
     error() {

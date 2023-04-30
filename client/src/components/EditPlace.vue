@@ -67,18 +67,6 @@
 </template>
 
 <script>
-import {
-  BRow,
-  BCol,
-  BModal,
-  BButton,
-  BContainer,
-  BFormCheckbox,
-  BFormTextarea,
-  BFormInput,
-  BButtonClose,
-} from "bootstrap-vue";
-
 export default {
   name: "EditPlace",
   props: {
@@ -86,17 +74,6 @@ export default {
       type: Object,
       required: true,
     },
-  },
-  components: {
-    BRow,
-    BCol,
-    BModal,
-    BButton,
-    BContainer,
-    BFormInput,
-    BFormCheckbox,
-    BFormTextarea,
-    BButtonClose,
   },
   computed: {
     error() {

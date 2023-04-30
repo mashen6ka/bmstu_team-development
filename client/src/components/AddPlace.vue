@@ -67,31 +67,9 @@
 </template>
 
 <script>
-import {
-  BRow,
-  BCol,
-  BModal,
-  BButton,
-  BContainer,
-  BFormCheckbox,
-  BFormTextarea,
-  BFormInput,
-} from "bootstrap-vue";
-
 export default {
   name: "AddPlace",
   props: {},
-
-  components: {
-    BRow,
-    BCol,
-    BModal,
-    BButton,
-    BContainer,
-    BFormInput,
-    BFormCheckbox,
-    BFormTextarea,
-  },
   computed: {
     error() {
       return this.$store.getters["place/error"];
