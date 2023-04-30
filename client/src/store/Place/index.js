@@ -68,7 +68,6 @@ const actions = {
       context.commit("setError", err);
     }
   },
-
   delete: async (context, { id }) => {
     try {
       const authHeader = buildAuthHeader();
@@ -84,6 +83,29 @@ const actions = {
         );
 
         context.commit("setError", null);
+      } catch (err) {
+        throw new BaseError(err.response.status);
+      }
+    } catch (err) {
+      context.commit("setError", err);
+    }
+  },
+  getList: async (context) => {
+    try {
+      const authHeader = buildAuthHeader();
+      if (!authHeader) throw new BaseError(403);
+
+      try {
+        const res = await axios.get(
+          process.env.VUE_APP_SERVER_ADDRESS + `/places`,
+          {
+            withCredentials: false,
+            headers: { Authorization: authHeader },
+          }
+        );
+        console.log(res);
+        context.commit("setError", null);
+        // context.commit("setPlaceList", );
       } catch (err) {
         throw new BaseError(err.response.status);
       }
