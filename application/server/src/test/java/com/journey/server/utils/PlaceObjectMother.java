@@ -15,7 +15,6 @@ public class PlaceObjectMother {
     public static CreatePlaceDTO getSomeNewInputPlace() {
         int curTime = (int) dtTime.toEpochSecond(ZoneOffset.UTC);
         return CreatePlaceDTO.builder()
-                .authorId(3)
                 .isVisited(false)
                 .title("Новое место")
                 .cardText("Описание нового места")
@@ -25,6 +24,7 @@ public class PlaceObjectMother {
 
     public static FullInfoPlaceDTO getSomeNewOutputPlace() {
         return FullInfoPlaceDTO.builder()
+                .id(31)
                 .authorName("Мария Слепокурова")
                 .isVisited(false)
                 .title("Новое место")
@@ -35,6 +35,7 @@ public class PlaceObjectMother {
 
     public static FullInfoPlaceDTO getSomeExistingOutputPlace() {
         return FullInfoPlaceDTO.builder()
+                .id(12)
                 .authorName("Мария Слепокурова")
                 .isVisited(false)
                 .title("Шанхай")

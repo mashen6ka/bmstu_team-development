@@ -20,10 +20,10 @@ public class PlaceMapper {
     /**
      * Конвертация из сущности БД в сущность DTO
      * @param place сущность БД, описывающая место
-     * @param user сущность БД, описывающая пользователя, создавшего место
+     * @param username имя пользователя, создавшего место
      * @return DTO с информацией о месте, необходимой пользователю
      */
-    public FullInfoPlaceDTO toFullInfoPlaceDTO(PlaceEntity place, UserEntity user) {
+    public FullInfoPlaceDTO toFullInfoPlaceDTO(PlaceEntity place, String username) {
         Instant instant = Instant.ofEpochSecond(place.getDttmUpdate());
         LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -31,7 +31,7 @@ public class PlaceMapper {
         return FullInfoPlaceDTO.builder()
                 .id(place.getId())
                 .title(place.getTitle())
-                .authorName(user.getName())
+                .authorName(username)
                 .cardText(place.getCardText())
                 .isVisited(place.isVisited())
                 .dttmUpdate(dateTime.format(formatter))
@@ -43,9 +43,9 @@ public class PlaceMapper {
      * @param dto DTO с информацией о месте, полученной от пользователя
      * @return сущность БД, описывающая место
      */
-    public PlaceEntity fromCreatePlaceDTO(CreatePlaceDTO dto) {
+        public PlaceEntity fromCreatePlaceDTO(CreatePlaceDTO dto, int authorId) {
         return PlaceEntity.builder()
-                .authorId(dto.getAuthorId())
+                .authorId(authorId)
                 .title(dto.getTitle())
                 .isVisited(dto.isVisited())
                 .dttmUpdate(dto.getDttmUpdate())

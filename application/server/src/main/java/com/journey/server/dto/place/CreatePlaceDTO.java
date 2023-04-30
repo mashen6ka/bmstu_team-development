@@ -14,11 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreatePlaceDTO {
     /**
-     * Идентификатор пользователя, создавшего карточку места
-     */
-    int authorId;
-
-    /**
      * Флаг посещенности места (true - посещенное, false - желаемое)
      */
     boolean isVisited;
