@@ -30,6 +30,8 @@ import {
   BNavItem,
   BIconBoxArrowRight,
   BIconPlusCircle,
+  BIconSignpostSplitFill,
+  BIconPinMapFill,
 } from "bootstrap-vue";
 
 Vue.component("BRow", BRow);
@@ -54,6 +56,8 @@ Vue.component("BCard", BCard);
 Vue.component("BNavItem", BNavItem);
 Vue.component("BIconBoxArrowRight", BIconBoxArrowRight);
 Vue.component("BIconPlusCircle", BIconPlusCircle);
+Vue.component("BIconSignpostSplitFill", BIconSignpostSplitFill);
+Vue.component("BIconPinMapFill", BIconPinMapFill);
 
 Vue.config.productionTip = false;
 Vue.use(Vuelidate);

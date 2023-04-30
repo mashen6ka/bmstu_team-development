@@ -1,7 +1,12 @@
 <template>
   <div>
-    <b-row class="text-right m-3">
-      <b-col
+    <b-row class="m-3">
+      <b-col class="text-left">
+        <h3 class="text-primary">
+          Journey <b-icon-pin-map-fill variant="primary"></b-icon-pin-map-fill>
+        </h3>
+      </b-col>
+      <b-col class="text-right" align-self="center"
         ><b-link @click="logout"
           >Logout
           <b-icon-box-arrow-right variant="primary"></b-icon-box-arrow-right
