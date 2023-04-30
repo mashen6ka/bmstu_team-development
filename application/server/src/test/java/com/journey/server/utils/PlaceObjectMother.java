@@ -9,16 +9,14 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 public class PlaceObjectMother {
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    private static LocalDateTime dtTime = LocalDateTime.of(2023, Month.APRIL, 20, 15, 12);
+    private static int dtTime = (int) LocalDateTime.of(2023, Month.APRIL, 20, 15, 12).toEpochSecond(ZoneOffset.UTC);
 
     public static CreatePlaceDTO getSomeNewInputPlace() {
-        int curTime = (int) dtTime.toEpochSecond(ZoneOffset.UTC);
         return CreatePlaceDTO.builder()
                 .isVisited(false)
                 .title("Новое место")
                 .cardText("Описание нового места")
-                .dttmUpdate(curTime)
+                .dttmUpdate(dtTime)
                 .build();
     }
 
@@ -29,7 +27,7 @@ public class PlaceObjectMother {
                 .isVisited(false)
                 .title("Новое место")
                 .cardText("Описание нового места")
-                .dttmUpdate(dtTime.format(formatter))
+                .dttmUpdate(dtTime)
                 .build();
     }
 
@@ -40,7 +38,7 @@ public class PlaceObjectMother {
                 .isVisited(false)
                 .title("Шанхай")
                 .cardText("Описание 12")
-                .dttmUpdate(dtTime.format(formatter))
+                .dttmUpdate(dtTime)
                 .build();
     }
 }

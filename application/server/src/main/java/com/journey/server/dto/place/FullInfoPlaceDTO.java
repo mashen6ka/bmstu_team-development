@@ -41,5 +41,5 @@ public class FullInfoPlaceDTO {
     /**
      * Время последнего обновления карточки места (в формате YYYY-MM-DD HH24:MI)
      */
-    String dttmUpdate;
+    int dttmUpdate;
 }

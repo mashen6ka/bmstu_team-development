@@ -24,17 +24,13 @@ public class PlaceMapper {
      * @return DTO с информацией о месте, необходимой пользователю
      */
     public FullInfoPlaceDTO toFullInfoPlaceDTO(PlaceEntity place, String username) {
-        Instant instant = Instant.ofEpochSecond(place.getDttmUpdate());
-        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
         return FullInfoPlaceDTO.builder()
                 .id(place.getId())
                 .title(place.getTitle())
                 .authorName(username)
                 .cardText(place.getCardText())
                 .isVisited(place.isVisited())
-                .dttmUpdate(dateTime.format(formatter))
+                .dttmUpdate(place.getDttmUpdate())
                 .build();
     }
 
