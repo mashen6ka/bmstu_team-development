@@ -25,7 +25,10 @@
                 class="icon"
               ></b-icon-check-circle>
             </b-button>
-            <b-button variant="light" class="non_first_button"
+            <b-button
+              @click="editPlace(place)"
+              variant="light"
+              class="non_first_button"
               ><b-icon-pencil variant="primary" class="icon"></b-icon-pencil
             ></b-button>
             <b-button
@@ -68,6 +71,11 @@
       v-bind:place="place"
       @close="showDeleteModal = false"
     ></DeletePlace>
+    <EditPlace
+      v-if="showEditModal"
+      v-bind:place="place"
+      @close="showEditModal = false"
+    ></EditPlace>
     <div class="mx-3">
       <p v-if="placeList.length === 0">Oops! No places available</p>
     </div>
@@ -77,6 +85,7 @@
 <script>
 import formatTimestamp from "../format-timestamp";
 import DeletePlace from "./DeletePlace.vue";
+import EditPlace from "./EditPlace.vue";
 
 export default {
   name: "PlaceList",
@@ -88,6 +97,7 @@ export default {
   },
   components: {
     DeletePlace,
+    EditPlace,
   },
   computed: {
     error() {
@@ -97,6 +107,7 @@ export default {
   data() {
     return {
       showDeleteModal: false,
+      showEditModal: false,
       place: null,
       formatTimestamp,
     };
@@ -109,20 +120,9 @@ export default {
       this.place = place;
       this.showDeleteModal = true;
     },
-    async editPlace() {
-      await this.$store.dispatch("place/edit", {
-        id: this.place.id,
-        title: this.title,
-        isVisited: this.isVisited,
-        cardText: this.cardText,
-        dttmUpdate: Math.floor(Date.now() / 1000),
-      });
-
-      if (!this.error) {
-        this.showModal = false;
-      } else if (this.error.status === 403) {
-        this.$router.push("/auth");
-      }
+    async editPlace(place) {
+      this.place = place;
+      this.showEditModal = true;
     },
     async movePlace() {
       await this.$store.dispatch("place/edit", {
