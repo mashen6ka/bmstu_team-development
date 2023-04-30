@@ -1,6 +1,6 @@
 import axios from "axios";
-import buildAuthHeader from "../build-auth-header";
 import hash from "../hash";
+import { AuthError } from "../error";
 
 const state = {
   user: null,
@@ -19,26 +19,24 @@ const mutations = {
 
 const actions = {
   login: async (context, { login, password }) => {
-    const authHeader = buildAuthHeader();
     try {
-      const res = await axios.post(
-        process.env.VUE_APP_SERVER_ADDRESS + "/auth",
-        { login: login, hash: hash(password) },
-        {
-          withCredentials: false,
-          headers: { Authorization: authHeader },
-        }
-      );
-      context.commit("setError", null);
+      if (login === "") throw new AuthError(400, "Empty login!");
+      if (password === "") throw new AuthError(400, "Empty password!");
 
-      localStorage.setItem("accessToken", res.data.accessToken);
-      localStorage.setItem("refreshToken", res.data.refreshToken);
+      try {
+        const res = await axios.post(
+          process.env.VUE_APP_SERVER_ADDRESS + "/auth",
+          { login: login, hash: hash(password) }
+        );
+        context.commit("setError", null);
+
+        localStorage.setItem("accessToken", res.data.accessToken);
+        localStorage.setItem("refreshToken", res.data.refreshToken);
+      } catch (err) {
+        throw new AuthError(err.response.status);
+      }
     } catch (err) {
-      const status = err.response.status;
-      let errorText;
-      if (status === 403) errorText = "Incorrect login or password";
-      else if (status === 500) errorText = "Internal server error";
-      context.commit("setError", errorText);
+      context.commit("setError", err);
     }
   },
   logout: () => {
@@ -46,23 +44,24 @@ const actions = {
     localStorage.removeItem("refreshToken");
   },
   register: async (context, { login, password, name }) => {
-    axios
-      .post(process.env.VUE_APP_SERVER_ADDRESS + "/register", {
-        login: login,
-        hash: hash(password),
-        name: name,
-      })
-      .then(() => {
-        context.commit("setError", "");
-      })
-      .catch((err) => {
-        const status = err.response.status;
-        let errorText;
-        if (status === 409) errorText = "This login is already taken :(";
-        else if (status === 500) errorText = "Internal server error";
+    try {
+      if (login === "") throw new AuthError(400, "Empty login!");
+      if (password === "") throw new AuthError(400, "Empty password!");
+      if (name === "") throw new AuthError(400, "Empty name!");
 
-        context.commit("setError", errorText);
-      });
+      try {
+        await axios.post(process.env.VUE_APP_SERVER_ADDRESS + "/register", {
+          login: login,
+          hash: hash(password),
+          name: name,
+        });
+        context.commit("setError", "");
+      } catch (err) {
+        throw new AuthError(err.response.status);
+      }
+    } catch (err) {
+      context.commit("setError", err);
+    }
   },
 };
 

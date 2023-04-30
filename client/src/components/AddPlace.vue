@@ -5,15 +5,18 @@
       align-v="center"
       v-model="showModal"
       centered
-      no-close-on-backdrop
-      no-close-on-esc
       hide-footer
     >
       <template #modal-header>
-        <b-container class="mt-2 text-center">
-          <h3>Sign in</h3>
+        <b-container class="mt-2 text-left">
+          <h3>Create place</h3>
         </b-container>
+
+        <b-col align-self="center">
+          <b-button-close class="pl-0"></b-button-close>
+        </b-col>
       </template>
+
       <b-container class="mb-4">
         <b-row class="mx-1">
           <b-col class="px-0">
@@ -25,17 +28,24 @@
 
         <b-row class="my-3 mx-1">
           <b-col>
-            <b-form-input v-model="login" placeholder="Login"></b-form-input>
+            <b-form-input v-model="title" placeholder="Title"></b-form-input>
           </b-col>
         </b-row>
 
-        <b-row class="mb-3 mx-1">
+        <b-row class="my-3 mx-1">
           <b-col>
-            <b-form-input
-              v-model="password"
-              type="password"
-              placeholder="Password"
-            ></b-form-input>
+            <b-form-checkbox v-model="isVisited" placeholder="isVisited"
+              >Visited</b-form-checkbox
+            >
+          </b-col>
+        </b-row>
+
+        <b-row class="my-3 mx-1">
+          <b-col>
+            <b-form-textarea
+              v-model="cardText"
+              placeholder="Description"
+            ></b-form-textarea>
           </b-col>
         </b-row>
 
@@ -43,18 +53,12 @@
           <b-col>
             <b-button
               block
-              @click="authorize"
+              @click="addPlace"
               class="flex-fill"
               variant="primary"
             >
-              Sign in
+              Confirm
             </b-button>
-          </b-col>
-        </b-row>
-
-        <b-row class="mb-3 mx-1 text-right">
-          <b-col>
-            <b-link @click="goToRegister">Not registered?</b-link>
           </b-col>
         </b-row>
       </b-container>
@@ -69,11 +73,15 @@ import {
   BModal,
   BButton,
   BContainer,
+  BFormCheckbox,
+  BFormTextarea,
   BFormInput,
-  BLink,
 } from "bootstrap-vue";
 
 export default {
+  name: "AddPlace",
+  props: {},
+
   components: {
     BRow,
     BCol,
@@ -81,36 +89,39 @@ export default {
     BButton,
     BContainer,
     BFormInput,
-    BLink,
+    BFormCheckbox,
+    BFormTextarea,
   },
   computed: {
     error() {
-      return this.$store.getters["auth/error"];
+      return this.$store.getters["place/error"];
     },
   },
   data() {
     return {
+      title: "",
+      cardText: "",
+      isVisited: false,
       showModal: true,
-      login: "",
-      password: "",
     };
   },
   methods: {
-    async authorize() {
-      await this.$store.dispatch("auth/login", {
-        login: this.login,
-        password: this.password,
+    close() {
+      this.$emit("close");
+    },
+    async addPlace() {
+      await this.$store.dispatch("place/add", {
+        title: this.title,
+        isVisited: this.isVisited,
+        cardText: this.cardText,
+        dttmUpdate: Math.floor(Date.now() / 1000),
       });
 
       if (!this.error) {
         this.showModal = false;
-        this.$router.push("home");
+      } else if (this.error.status === 403) {
+        this.$router.push("auth");
       }
-    },
-    goToRegister() {
-      this.$store.commit("auth/setError", null);
-      this.showModal = false;
-      this.$router.push("register");
     },
   },
 };

@@ -5,15 +5,18 @@
       align-v="center"
       v-model="showModal"
       centered
-      no-close-on-backdrop
-      no-close-on-esc
       hide-footer
     >
       <template #modal-header>
-        <b-container class="mt-2 text-center">
-          <h3>Register</h3>
+        <b-container class="mt-2 text-left">
+          <h3>Edit place</h3>
         </b-container>
+
+        <b-col align-self="center">
+          <b-button-close class="pl-0"></b-button-close>
+        </b-col>
       </template>
+
       <b-container class="mb-4">
         <b-row class="mx-1">
           <b-col class="px-0">
@@ -25,23 +28,24 @@
 
         <b-row class="my-3 mx-1">
           <b-col>
-            <b-form-input v-model="login" placeholder="Login"></b-form-input>
+            <b-form-input v-model="title" placeholder="Title"></b-form-input>
           </b-col>
         </b-row>
 
-        <b-row class="mb-3 mx-1">
+        <b-row class="my-3 mx-1">
           <b-col>
-            <b-form-input
-              v-model="password"
-              type="password"
-              placeholder="Password"
-            ></b-form-input>
+            <b-form-checkbox v-model="isVisited" placeholder="isVisited"
+              >Visited</b-form-checkbox
+            >
           </b-col>
         </b-row>
 
-        <b-row class="mb-3 mx-1">
+        <b-row class="my-3 mx-1">
           <b-col>
-            <b-form-input v-model="name" placeholder="Name"></b-form-input>
+            <b-form-textarea
+              v-model="cardText"
+              placeholder="Description"
+            ></b-form-textarea>
           </b-col>
         </b-row>
 
@@ -49,23 +53,16 @@
           <b-col>
             <b-button
               block
-              @click="register"
+              @click="editPlace"
               class="flex-fill"
               variant="primary"
             >
-              Register
+              Confirm
             </b-button>
-          </b-col>
-        </b-row>
-
-        <b-row class="mb-3 mx-1 text-right">
-          <b-col>
-            <b-link @click="goToAuth">Already have an account?</b-link>
           </b-col>
         </b-row>
       </b-container>
     </b-modal>
-    <!-- TODO: сделать алерт об успешной авторизации до редиректа -->
   </div>
 </template>
 
@@ -76,11 +73,20 @@ import {
   BModal,
   BButton,
   BContainer,
+  BFormCheckbox,
+  BFormTextarea,
   BFormInput,
-  BLink,
+  BButtonClose,
 } from "bootstrap-vue";
 
 export default {
+  name: "EditPlace",
+  props: {
+    place: {
+      type: Object,
+      required: true,
+    },
+  },
   components: {
     BRow,
     BCol,
@@ -88,38 +94,41 @@ export default {
     BButton,
     BContainer,
     BFormInput,
-    BLink,
+    BFormCheckbox,
+    BFormTextarea,
+    BButtonClose,
   },
   computed: {
     error() {
-      return this.$store.getters["auth/error"];
+      return this.$store.getters["place/error"];
     },
   },
   data() {
     return {
+      title: this.place.title,
+      cardText: this.place.cardText,
+      isVisited: this.place.isVisited,
       showModal: true,
-      login: "",
-      password: "",
-      name: "",
     };
   },
   methods: {
-    async register() {
-      this.$store.dispatch("auth/register", {
-        login: this.login,
-        password: this.password,
-        name: this.name,
+    close() {
+      this.$emit("close");
+    },
+    async editPlace() {
+      await this.$store.dispatch("place/edit", {
+        id: this.place.id,
+        title: this.title,
+        isVisited: this.isVisited,
+        cardText: this.cardText,
+        dttmUpdate: Math.floor(Date.now() / 1000),
       });
 
       if (!this.error) {
         this.showModal = false;
+      } else if (this.error.status === 403) {
         this.$router.push("auth");
       }
-    },
-    goToAuth() {
-      this.$store.commit("auth/setError", null);
-      this.showModal = false;
-      this.$router.push("auth");
     },
   },
 };
