@@ -1,5 +1,6 @@
 package com.journey.server.dto.place;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,4 +33,9 @@ public class CreatePlaceDTO {
      * Подробное описание карточки места
      */
     String cardText;
+
+    @JsonProperty("isVisited")
+    public void setVisited(boolean visited) {
+        isVisited = visited;
+    }
 }

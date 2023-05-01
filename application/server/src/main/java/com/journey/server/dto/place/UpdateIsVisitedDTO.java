@@ -1,5 +1,6 @@
 package com.journey.server.dto.place;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,4 +23,9 @@ public class UpdateIsVisitedDTO {
      * Время последнего обновления карточки места (в секундах от начала Эпохи)
      */
     int dttmUpdate;
+
+    @JsonProperty("isVisited")
+    public void setVisited(boolean visited) {
+        isVisited = visited;
+    }
 }

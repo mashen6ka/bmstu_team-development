@@ -1,5 +1,6 @@
 package com.journey.server.dto.place;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,4 +43,9 @@ public class FullInfoPlaceDTO {
      * Время последнего обновления карточки места (в формате YYYY-MM-DD HH24:MI)
      */
     int dttmUpdate;
+
+    @JsonProperty("isVisited")
+    public boolean isVisited() {
+        return this.isVisited;
+    }
 }
