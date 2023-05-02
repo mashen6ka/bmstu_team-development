@@ -73,7 +73,8 @@
 export default {
   mounted() {
     const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (accessToken || refreshToken) {
       this.$router.push("/account");
     }
   },
