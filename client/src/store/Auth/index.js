@@ -1,6 +1,6 @@
-import axios from "axios";
 import hash from "../hash";
 import { AuthError } from "../error";
+import ax from "../../axios-instance";
 
 const state = {
   user: null,
@@ -24,14 +24,16 @@ const actions = {
       if (password === "") throw new AuthError(400, "Empty password!");
 
       try {
-        const res = await axios.post(
-          process.env.VUE_APP_SERVER_ADDRESS + "/auth",
-          { login: login, hash: hash(password) }
-        );
+        const res = await ax.post("/auth", {
+          login: login,
+          hash: hash(password),
+        });
         context.commit("setError", null);
 
-        localStorage.setItem("accessToken", res.data.accessToken);
+        ax.defaults.headers.common["Authorization"] =
+          "Bearer " + res.data.accessToken;
         localStorage.setItem("refreshToken", res.data.refreshToken);
+        localStorage.setItem("accessToken", res.data.accessToken);
       } catch (err) {
         throw new AuthError(err.response.status);
       }
@@ -40,8 +42,9 @@ const actions = {
     }
   },
   logout: () => {
-    localStorage.removeItem("accessToken");
+    delete ax.defaults.headers.common["Authorization"];
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("accessToken");
   },
   register: async (context, { login, password, name }) => {
     try {
@@ -50,7 +53,7 @@ const actions = {
       if (name === "") throw new AuthError(400, "Empty name!");
 
       try {
-        await axios.post(process.env.VUE_APP_SERVER_ADDRESS + "/register", {
+        await ax.post("/register", {
           login: login,
           hash: hash(password),
           name: name,
