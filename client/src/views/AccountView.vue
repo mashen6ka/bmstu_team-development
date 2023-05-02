@@ -53,12 +53,7 @@ export default {
     PlaceList,
   },
   async mounted() {
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      this.$router.push("/signin");
-    }
     await this.$store.dispatch("place/getList");
-    if (this.error?.status === 403) this.$router.push("/signin");
   },
   computed: {
     visitedPlaces() {
